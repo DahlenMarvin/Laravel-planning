@@ -52,7 +52,7 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('employee.create') }}"><i class="fas fa-users-cog"></i> Les employés</a>
+                                <a class="nav-link" href="{{ route('employee.index') }}"><i class="fas fa-users-cog"></i> Les employés</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

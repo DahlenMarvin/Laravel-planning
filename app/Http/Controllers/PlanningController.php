@@ -120,6 +120,10 @@ class PlanningController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $planning = Planning::find($id);
+        $planning->delete();
+
+        return Redirect::to("/planning")->withSuccess('Planning supprimé');
     }
 }

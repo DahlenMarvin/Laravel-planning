@@ -33,9 +33,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="date" class="col-sm-2 col-form-label">Date</label>
+                            <label for="date" class="col-sm-2 col-form-label">Date début</label>
                             <div class="col-sm-10">
-                                <input type="text" class="date form-control" id="date" name="date">
+                                <input type="datetime-local" class="date form-control" id="date" name="date">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="date_end" class="col-sm-2 col-form-label">Date fin</label>
+                            <div class="col-sm-10">
+                                <input type="datetime-local" class="date form-control" id="date_end" name="date_end">
                             </div>
                         </div>
                 </div>
@@ -51,14 +57,16 @@
 @endsection
 
 @section('js')
-
     <script>
+
         document.addEventListener('DOMContentLoaded', function() {
+
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
                 selectable: true,
+                locale: 'fr',
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -69,13 +77,14 @@
                     {
                             title : '{{$planning->employee()->get()[0]->name . ' ' . $planning->employee()->get()[0]->lastname}}',
                             start : '{{$planning->date}}',
-                            url : 'TESTuRL',
+                            end : '{{$planning->date_end}}',
+                            url : '{{route('planning.show', $planning)}}',
 
                     },
                     @endforeach
                 ],
                 dateClick: function(info) {
-                    $('.date').val(info.dateStr);
+                    $('.date').val(info.dateStr + 'T09:00');
                     $('#basicExampleModal').modal();
                 }
             });

@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use App\Planning;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\View\View;
 
 class PlanningController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function index()
     {
@@ -41,6 +44,7 @@ class PlanningController extends Controller
     {
         $planning = new Planning();
         $planning->date = $request->get('date');
+        $planning->date_end = $request->get('date_end');
         $planning->employee()->associate($request->get('employee_id'));
         $planning->save();
         return 0;
@@ -50,11 +54,13 @@ class PlanningController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Factory|View
      */
     public function show($id)
     {
-        //
+        $employees = Employee::all();
+        $planning = Planning::find($id);
+        return view('planning.show', compact('planning','employees'));
     }
 
     /**
@@ -77,7 +83,14 @@ class PlanningController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $planning = Planning::find($id);
+        $planning->date = $request->get('date');
+        $planning->date_end = $request->get('date_end');
+        $planning->employee()->associate($request->get('employee_id'));
+        $planning->save();
+
+        return Redirect::to("/planning")->withSuccess('Planning mis à jour');
+
     }
 
     /**

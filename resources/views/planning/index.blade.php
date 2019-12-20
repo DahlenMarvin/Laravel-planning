@@ -2,6 +2,28 @@
 
 @section('content')
 
+    <div style="float: left">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Nb heure</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($arrayhoursPerEmployee as $array)
+                    @foreach($array as $k => $v)
+                        <tr>
+                            <th>{{ $k }} </th>
+                            <td>{{ $v / 60 }} heures</td>
+                        </tr>
+                    @endforeach
+                @endforeach
+
+                </tbody>
+            </table>
+    </div>
+
     <div class="container">
 
         <div id="calendar"></div>

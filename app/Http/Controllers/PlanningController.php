@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use App\Planning;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,25 @@ class PlanningController extends Controller
     {
         $employees = Employee::where('user_id', '=', Auth::user()->id)->get();
         $plannings = Planning::all();
-        return view('planning.index', compact('employees', 'plannings'));
+
+        //On calcul le quota actuel du mois par vendeuse
+        $start = new Carbon('first day of this month');
+        $end = new Carbon('last day of this month');
+        $total = 0;
+        $arrayhoursPerEmployee = [];
+
+        foreach ($employees as $employee) {
+            $planningsEmployee = Planning::where('employee_id', '=', $employee->id)->where('date', '>=', $start)->where('date_end', '<=', $end)->get();
+            foreach ($planningsEmployee as $planningEmployee) {
+                $total = $total + Carbon::parse($planningEmployee->date_end)->diffInMinutes(Carbon::parse($planningEmployee->date));
+            }
+            array_push($arrayhoursPerEmployee, [
+                $employee->name => $total
+            ]);
+            $total = 0;
+        }
+
+        return view('planning.index', compact('employees', 'plannings', 'arrayhoursPerEmployee'));
     }
 
     /**

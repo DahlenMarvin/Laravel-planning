@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -40,7 +42,13 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         try {
-            Employee::create($request->all());
+
+            $employe = new Employee();
+            $employe->name = $request->get('name');
+            $employe->lastname = $request->get('lastname');
+            $employe->user()->associate(Auth::user());
+            $employe->save();
+            
             return Redirect::to("/employee")->withSuccess('Employé créé');
         } catch (\Exception $e) {
             return Redirect::to("/employee")->withErrors('Employé non créé');

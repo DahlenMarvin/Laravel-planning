@@ -3,56 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
-use App\User;
-use Illuminate\Contracts\View\Factory;
+use App\Planning;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 
-class EmployeeController extends Controller
+class PlanningController extends Controller
 {
     /**
-     * Show all the employees
+     * Display a listing of the resource.
      *
-     * @return Factory|View
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        $employees = Employee::all();
-        return view('employee.index', compact('employees'));
+        $employees = Employee::where('user_id', '=', Auth::user()->id)->get();
+        $plannings = Planning::all();
+        return view('planning.index', compact('employees', 'plannings'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return Factory|View
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        return view('employee.create');
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return int
      */
     public function store(Request $request)
     {
-        try {
-
-            $employe = new Employee();
-            $employe->name = $request->get('name');
-            $employe->lastname = $request->get('lastname');
-            $employe->user()->associate(Auth::user());
-            $employe->save();
-
-            return Redirect::to("/employee")->withSuccess('Employé créé');
-        } catch (\Exception $e) {
-            return Redirect::to("/employee")->withErrors('Employé non créé');
-        }
+        $planning = new Planning();
+        $planning->date = $request->get('date');
+        $planning->employee()->associate($request->get('employee_id'));
+        $planning->save();
+        return 0;
     }
 
     /**
@@ -93,13 +84,10 @@ class EmployeeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-       $employee = Employee::find($id);
-       $employee->delete();
-
-        return Redirect::to("/employee")->withSuccess('Employé supprimé');
+        //
     }
 }

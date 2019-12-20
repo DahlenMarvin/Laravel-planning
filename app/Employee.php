@@ -16,4 +16,12 @@ class Employee extends Model
         return $this->belongsTo('App\User');
     }
 
+    /**
+     * Get the plannings
+     */
+    public function plannings()
+    {
+        return $this->hasMany('App\Planning');
+    }
+
 }

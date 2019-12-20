@@ -19,12 +19,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach($employees as $employe)
+                    @foreach($employees as $employee)
                         <tr>
-                            <th>{{$employe->name}}</th>
-                            <td>{{$employe->lastname}}</td>
+                            <th>{{$employee->name}}</th>
+                            <td>{{$employee->lastname}}</td>
                             <td>
-                                <a href="{{ route('employee.destroy',$employe) }}"><i class="fas fa-times-circle"> Supprimer</i> </a>
+                                <form action="{{ route('employee.destroy', $employee)}}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger" type="submit"><i class="fas fa-times-circle"> Supprimer</i> </button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

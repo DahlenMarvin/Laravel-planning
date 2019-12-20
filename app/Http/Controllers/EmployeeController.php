@@ -39,8 +39,12 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        Employee::create($request->all());
-        return redirect()->route('employee.index');
+        try {
+            Employee::create($request->all());
+            return Redirect::to("/employee")->withSuccess('Employé créé');
+        } catch (\Exception $e) {
+            return Redirect::to("/employee")->withErrors('Employé non créé');
+        }
     }
 
     /**
@@ -85,6 +89,9 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        //
+       $employee = Employee::find($id);
+       $employee->delete();
+
+        return Redirect::to("/employee")->withSuccess('Employé supprimé');
     }
 }

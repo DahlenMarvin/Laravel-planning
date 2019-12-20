@@ -12,6 +12,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://kit.fontawesome.com/2bcba094d2.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -78,6 +79,32 @@
         </nav>
 
         <main class="py-4">
+
+            @if(Session::has('success'))
+                <script type="text/javascript">
+                    swal({
+                        icon: "success",
+                        text:"{{Session::get('success')}}",
+                        timer:2000,
+                        type:'success'
+                    }).then((value) => {
+                        //location.reload();
+                    }).catch(swal.noop);
+                </script>
+            @endif
+            @if(Session::has('fail'))
+                <script type="text/javascript">
+                    swal({
+                        icon:'error',
+                        text:"{{Session::get('fail')}}",
+                        type:'error',
+                        timer:2000
+                    }).then((value) => {
+                        //location.reload();
+                    }).catch(swal.noop);
+                </script>
+            @endif
+
             @yield('content')
         </main>
     </div>

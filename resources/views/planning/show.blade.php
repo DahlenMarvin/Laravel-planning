@@ -31,17 +31,13 @@
             </div>
             <div class="form-group row">
                 <button type="submit" class="btn btn-success">Mettre à jour</button>
-                <form action="{{ route('planning.destroy', $planning)}}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger" type="submit"><i class="fas fa-times-circle"> Supprimer</i> </button>
-                </form>
             </div>
         </form>
-    </div>
-
-
-
+        <form action="{{ route('planning.destroy', $planning)}}" method="post">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-danger" type="submit"><i class="fas fa-times-circle"> Supprimer</i> </button>
+        </form>
     </div>
 
 @endsection

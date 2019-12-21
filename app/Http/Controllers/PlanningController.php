@@ -21,7 +21,8 @@ class PlanningController extends Controller
     public function index()
     {
         $employees = Employee::where('user_id', '=', Auth::user()->id)->get();
-        $plannings = Planning::all();
+        $employeesIds = Employee::where('user_id', '=', Auth::user()->id)->pluck('id')->toArray();
+        $plannings = Planning::whereIn('employee_id', $employeesIds)->get();
 
         //On calcul le quota actuel du mois par vendeuse
         $start = new Carbon('first day of this month');

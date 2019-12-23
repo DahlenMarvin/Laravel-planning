@@ -2,26 +2,29 @@
 
 @section('content')
 
-    <div style="float: left">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Nb heure</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($arrayhoursPerEmployee as $array)
-                    @foreach($array as $k => $v)
-                        <tr>
-                            <th>{{ $k }} </th>
-                            <td>{{ $v / 60 }} heures</td>
-                        </tr>
-                    @endforeach
+    <div style="float: left; margin-left: 5%;">
+        <table class="table table-bordered" style="text-align: center;" id="TableHours">
+            <thead>
+            <tr>
+                <th colspan="2">{{ \Carbon\Carbon::now()->format('m / Y') }}</th>
+            </tr>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Nb heure</th>
+            </tr>
+            </thead>
+            <tbody id="nbHours">
+            @foreach($arrayhoursPerEmployee as $array)
+                @foreach($array as $k => $v)
+                    <tr>
+                        <th>{{ $k }} </th>
+                        <td>{{ $v }} heures</td>
+                    </tr>
                 @endforeach
+            @endforeach
 
-                </tbody>
-            </table>
+            </tbody>
+        </table>
     </div>
 
     <div class="container">
@@ -50,6 +53,7 @@
                                 <select class="form-control" id="employe" name="employee_id">
                                     @foreach($employees as $employe)
                                         <option value="{{ $employe->id }}">{{ $employe->name . ' ' . $employe->lastname }}</option>
+                                        <?php $user_id = $employe->user_id ?>
                                     @endforeach
                                 </select>
                             </div>
@@ -110,6 +114,24 @@
             });
 
             calendar.render();
+
+            $('.fc-button-group').on('click', function() {
+                $.ajax({
+                    method: 'GET',
+                    url: '{{ route('planning.updateHours') }}',
+                    data: {
+                        month: $('.fc-center').text(),
+                        user_id: {{ $user_id }},
+                    },
+                    dataType: 'html',
+                })
+                    .done(function(data) {
+                        $('#TableHours').html(data);
+                    })
+                    .fail(function(data) {
+                        $('#TableHours').html(data);
+                    });
+            });
 
             $('#submit').click(function() {
                 var form = $('#addEmployee');

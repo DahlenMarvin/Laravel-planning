@@ -130,10 +130,17 @@ class PlanningController extends Controller
 
     public function updateHours(Request $request) {
 
-        $date = $this->repository->dateStringToDateTime($request->get('month'));
+        $month = $request->get('month');
+        $user_id = $request->get('user_id');
+
+        $date = $this->repository->dateStringToDateTime($month);
         $start = $date->firstOfMonth()->format('Y-m-d H:i:s');
         $end = $date->endOfMonth()->format('Y-m-d H:i:s');
-        $array = $this->repository->recupHoursEmployees(Auth::user()->id, $start, $end);
+        if(isset($user_id)) {
+            $array = $this->repository->recupHoursEmployees($request->get('user_id'), $start, $end);
+        } else {
+            $array = $this->repository->recupHoursEmployees(Auth::user()->id, $start, $end);
+        }
 
         $html = "<thead>";
         $html .= "<tr>";

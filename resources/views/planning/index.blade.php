@@ -18,7 +18,7 @@
                     @foreach($array as $k => $v)
                         <tr>
                             <th>{{ $k }} </th>
-                            <td>{{ $v / 60 }} heures</td>
+                            <td>{{ $v }} heures</td>
                         </tr>
                     @endforeach
                 @endforeach

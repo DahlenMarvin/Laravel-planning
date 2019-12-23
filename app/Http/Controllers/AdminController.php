@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use App\Planning;
+use App\Repository\AppRepository;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,6 +12,14 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+
+    public $repository;
+
+    public function __construct()
+    {
+        $this->repository = new AppRepository();
+    }
+
     public function showFormChoosePlanning() {
         $magasins = User::where('type', '=', 'Magasin')->get();
         return view('admin.showFormChoosePlanning', compact('magasins'));
@@ -23,21 +32,11 @@ class AdminController extends Controller
         $plannings = Planning::whereIn('employee_id', $employeesIds)->get();
 
         //On calcul le quota actuel du mois par vendeuse
-        $start = new Carbon('first day of next month');
-        $end = new Carbon('last day of next month');
-        $total = 0;
-        $arrayhoursPerEmployee = [];
+        $start = new Carbon('first day of this month');
+        $end = new Carbon('last day of this month');
 
-        foreach ($employees as $employee) {
-            $planningsEmployee = Planning::where('employee_id', '=', $employee->id)->where('date', '>=', $start)->where('date_end', '<=', $end)->get();
-            foreach ($planningsEmployee as $planningEmployee) {
-                $total = $total + Carbon::parse($planningEmployee->date_end)->diffInMinutes(Carbon::parse($planningEmployee->date));
-            }
-            array_push($arrayhoursPerEmployee, [
-                $employee->name => $total
-            ]);
-            $total = 0;
-        }
+        $arrayhoursPerEmployee = $this->repository->recupHoursEmployees($request->get('user_id'), $start, $end);
+
 
 
 

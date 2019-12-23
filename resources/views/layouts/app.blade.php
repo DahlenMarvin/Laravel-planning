@@ -57,29 +57,54 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('employee.index') }}"><i class="fas fa-users-cog"></i> Les employés</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('planning.index') }}"><i class="fas fa-calendar-check"></i> Le planning</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                            @if(\Illuminate\Support\Facades\Auth::user()->type == "Magasin")
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('employee.index') }}"><i class="fas fa-users-cog"></i> Les employés</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('planning.index') }}"><i class="fas fa-calendar-check"></i> Le planning</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        {{ Auth::user()->name }} <span class="caret"></span>
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                </li>
+                            @elseif(\Illuminate\Support\Facades\Auth::user()->type == "Admin")
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.showFormChoosePlanning') }}"><i class="fas fa-users-cog"></i> Les plannings</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        {{ Auth::user()->name }} <span class="caret"></span>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                </li>
+                            @else
+                                <p>Vous n'avez pas de type de compte.</p>
+                            @endif
                         @endguest
                     </ul>
                 </div>

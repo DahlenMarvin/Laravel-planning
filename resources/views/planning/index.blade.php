@@ -2,15 +2,18 @@
 
 @section('content')
 
-    <div style="float: left">
-            <table class="table">
+    <div style="float: left; margin-left: 5%">
+            <table class="table table-bordered" style="text-align: center;" id="TableHours">
                 <thead>
+                <tr>
+                    <th colspan="2">{{ \Carbon\Carbon::now()->format('m / Y') }}</th>
+                </tr>
                 <tr>
                     <th scope="col">Nom</th>
                     <th scope="col">Nb heure</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="nbHours">
                 @foreach($arrayhoursPerEmployee as $array)
                     @foreach($array as $k => $v)
                         <tr>
@@ -84,16 +87,19 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             var calendarEl = document.getElementById('calendar');
+            var montName = document.getElementsByClassName('fc-center');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
                 selectable: true,
-                locale: 'fr',
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay, listMonth'
                 },
+                eventLimit: true,
+                locale: 'fr',
+                weekNumbers: true,
                 events : [
                     @foreach($plannings as $planning)
                     {
@@ -112,6 +118,23 @@
             });
 
             calendar.render();
+
+            $('.fc-button-group').on('click', function() {
+                $.ajax({
+                    method: 'GET',
+                    url: '{{ route('planning.updateHours') }}',
+                    data: {
+                        month: $('.fc-center').text()
+                    },
+                    dataType: 'html',
+                })
+                .done(function(data) {
+                    $('#TableHours').html(data);
+                })
+                .fail(function(data) {
+                    $('#TableHours').html(data);
+                });
+            });
 
             $('#submit').click(function() {
                 var form = $('#addEmployee');

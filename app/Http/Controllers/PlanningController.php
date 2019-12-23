@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use App\Planning;
+use App\Repository\AppRepository;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
@@ -13,10 +14,19 @@ use Illuminate\View\View;
 
 class PlanningController extends Controller
 {
+
+    public $repository;
+
+    public function __construct()
+    {
+        $this->repository = new AppRepository();
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return Factory|View
+     * @throws \Exception
      */
     public function index()
     {
@@ -27,19 +37,9 @@ class PlanningController extends Controller
         //On calcul le quota actuel du mois par vendeuse
         $start = new Carbon('first day of this month');
         $end = new Carbon('last day of this month');
-        $total = 0;
-        $arrayhoursPerEmployee = [];
 
-        foreach ($employees as $employee) {
-            $planningsEmployee = Planning::where('employee_id', '=', $employee->id)->where('date', '>=', $start)->where('date_end', '<=', $end)->get();
-            foreach ($planningsEmployee as $planningEmployee) {
-                $total = $total + Carbon::parse($planningEmployee->date_end)->diffInMinutes(Carbon::parse($planningEmployee->date));
-            }
-            array_push($arrayhoursPerEmployee, [
-                $employee->name => $total
-            ]);
-            $total = 0;
-        }
+        $arrayhoursPerEmployee = $this->repository->recupHoursEmployees(Auth::user()->id, $start, $end);
+
 
         return view('planning.index', compact('employees', 'plannings', 'arrayhoursPerEmployee'));
     }
@@ -127,4 +127,36 @@ class PlanningController extends Controller
 
         return Redirect::to("/planning")->withSuccess('Planning supprimé');
     }
+
+    public function updateHours(Request $request) {
+
+        $date = $this->repository->dateStringToDateTime($request->get('month'));
+        $start = $date->firstOfMonth()->format('Y-m-d H:i:s');
+        $end = $date->endOfMonth()->format('Y-m-d H:i:s');
+        $array = $this->repository->recupHoursEmployees(Auth::user()->id, $start, $end);
+
+        $html = "<thead>";
+        $html .= "<tr>";
+        $html .= "<th colspan=\"2\">" . $date->format('m / Y') . "</th>";
+        $html .= "</tr>";
+        $html .= "<tr>";
+        $html .= "<th scope=\"col\">Nom</th>";
+        $html .= "<th scope=\"col\">Nb heure</th>";
+        $html .= "</tr>";
+        $html .= "</thead>";
+        $html .= "<tbody id=\"nbHours\">";
+        foreach ($array as $item) {
+            foreach ($item as $k => $v) {
+                $html .= "<tr>";
+                $html .= "<th> " . $k . " </th>";
+                $html .= "<td> " . $v . " heures </td>";
+                $html .= "</tr>";
+            }
+        }
+        $html .= "</tbody>";
+
+        echo $html;
+        return 0;
+    }
+
 }

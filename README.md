@@ -11,11 +11,11 @@ Un niveau au dessus se trouve les responsables qui peuvent accéder à n'importe
 
 Pour le moment le code est fait vite fait, il fallait une solution fonctionnelle en moins de 4 jours.
 
-##Installation
+## Installation
 
 A venir
 
-##A faire
+## A faire
 
 * [ ] Mettre en place des templates de planning draggable
     * Par exemple 8H30 - 12H30 qui correspond à une matinée pour un magasin, ainsi pouvoir drag sur le calendrier ce template et choisir un employé --> Création d'un event en BDD

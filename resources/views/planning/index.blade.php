@@ -1,5 +1,25 @@
 @extends('layouts/app')
 
+@section('css')
+
+    <style>
+        #external-events {
+            position: fixed;
+            z-index: 2;
+            width: 150px;
+            padding: 0 10px;
+            border: 1px solid #ccc;
+            background: #ffffff;
+        }
+
+        #external-events .fc-event {
+            margin: 1em 0;
+            cursor: move;
+        }
+    </style>
+
+@endsection
+
 @section('content')
 
     <div style="float: left; margin-left: 5%">
@@ -25,6 +45,22 @@
 
                 </tbody>
             </table>
+        <br><br>
+
+        <div id='external-events'>
+            <p>
+                <strong>Evenement</strong>
+            </p>
+            <label for="employee">Employé</label>
+            <select name="employee_id" id="employee_id" class="form-control">
+                @foreach($employees as $employe)
+                    <option value="{{ $employe->id }}">{{ $employe->name . ' ' . $employe->lastname }}</option>
+                @endforeach
+            </select>
+            <div class='fc-event'>Matin</div>
+            <div class='fc-event'>Après-midi</div>
+        </div>
+
     </div>
 
     <div class="container">
@@ -88,6 +124,18 @@
 
             var calendarEl = document.getElementById('calendar');
             var montName = document.getElementsByClassName('fc-center');
+            var Draggable = FullCalendarInteraction.Draggable;
+            var containerEl = document.getElementById('external-events');
+            new Draggable(containerEl, {
+                itemSelector: '.fc-event',
+                eventData: function(eventEl) {
+                    return {
+                        title: eventEl.innerText,
+                        startTime: '08:30',
+                        duration: "04:00"
+                    };
+                }
+            });
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
@@ -97,6 +145,7 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay, listMonth'
                 },
+                droppable: true,
                 eventLimit: true,
                 locale: 'fr',
                 weekNumbers: true,
@@ -114,6 +163,35 @@
                 dateClick: function(info) {
                     $('.date').val(info.dateStr + 'T09:00');
                     $('#basicExampleModal').modal();
+                },
+                drop: function(info) {
+                    var employee_id = $('#employee_id').val();
+                    var date = info.dateStr;
+                    var event = info.draggedEl.textContent;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{ route('planning.addEvent') }}',
+                        data: {
+                            employee_id: employee_id,
+                            date: date,
+                            event: event
+                        },
+                        dataType: '',
+                    })
+                        .done(function(data) {
+                            location.reload();
+                        })
+                        .fail(function(data) {
+                            console.log(data);
+                        });
+
                 }
             });
 

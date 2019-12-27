@@ -26,4 +26,5 @@ Route::resource('planning', 'PlanningController');
 Route::get('admin/showFormChoosePlanning', 'AdminController@showFormChoosePlanning')->name('admin.showFormChoosePlanning');
 Route::post('admin/planning', 'AdminController@planning')->name('admin.planning');
 Route::get('updateHours', 'PlanningController@updateHours')->name('planning.updateHours');
+Route::post('addEvent', 'PlanningController@addEvent')->name('planning.addEvent');
 

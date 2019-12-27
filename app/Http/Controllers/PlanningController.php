@@ -38,7 +38,7 @@ class PlanningController extends Controller
         $start = new Carbon('first day of this month');
         $end = new Carbon('last day of this month');
 
-        $arrayhoursPerEmployee = $this->repository->recupHoursEmployees(Auth::user()->id, $start, $end);
+        $arrayhoursPerEmployee = $this->repository->recupHoursEmployees(Auth::user()->id, $start, $end->addDay());
 
 
         return view('planning.index', compact('employees', 'plannings', 'arrayhoursPerEmployee'));
@@ -135,7 +135,7 @@ class PlanningController extends Controller
 
         $date = $this->repository->dateStringToDateTime($month);
         $start = $date->firstOfMonth()->format('Y-m-d H:i:s');
-        $end = $date->endOfMonth()->format('Y-m-d H:i:s');
+        $end = $date->endOfMonth()->addDay()->format('Y-m-d H:i:s');
         if(isset($user_id)) {
             $array = $this->repository->recupHoursEmployees($request->get('user_id'), $start, $end);
         } else {

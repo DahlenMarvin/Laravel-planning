@@ -166,4 +166,21 @@ class PlanningController extends Controller
         return 0;
     }
 
+    public function addEvent(Request $request) {
+        $planning = new Planning();
+        if($request->get('event') == "Matin") {
+            $planning->date = $request->get('date') . "T08:30";
+            $planning->date_end = $request->get('date') . "T12:30";
+        } elseif ($request->get('event') == "Après-midi") {
+            $planning->date = $request->get('date') . "T13:30";
+            $planning->date_end = $request->get('date') . "T19:30";
+        } else {
+            $planning->date = $request->get('date') . "T08:30";
+            $planning->date_end = $request->get('date') . "T19:30";
+        }
+        $planning->employee()->associate($request->get('employee_id'));
+        $planning->save();
+        return 0;
+    }
+
 }

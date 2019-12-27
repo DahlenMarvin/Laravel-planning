@@ -24,3 +24,4 @@ A venir
     * Pour le moment :
         * Employees : Table qui gère les employés (En lien avec user_id)
         * Users : table qui gère les deux types de responsables avec un champ type (Admin | Magasin)
+* [ ] Delete la route "Register" car c'est l'administrateur qui doit créer un nouveau "Magasin"

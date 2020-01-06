@@ -6,10 +6,19 @@
         #external-events {
             position: fixed;
             z-index: 2;
-            width: 150px;
             padding: 0 10px;
             border: 1px solid #ccc;
             background: #ffffff;
+            margin-top: 260px;
+        }
+
+        #TableHours {
+            position: fixed;
+            z-index: 2;
+            padding: 0 10px;
+            border: 1px solid #ccc;
+            background: #ffffff;
+            width: 10%;
         }
 
         #external-events .fc-event {
@@ -23,7 +32,7 @@
 @section('content')
 
     <div style="float: left; margin-left: 5%">
-            <table class="table table-bordered" style="text-align: center;" id="TableHours">
+            <table class="table table-bordered" id="TableHours">
                 <thead>
                 <tr>
                     <th colspan="2">{{ \Carbon\Carbon::now()->format('m / Y') }}</th>
@@ -59,6 +68,7 @@
             </select>
             <div class='fc-event'>Matin</div>
             <div class='fc-event'>Après-midi</div>
+            <div class='fc-event'>Journée continue</div>
         </div>
 
     </div>

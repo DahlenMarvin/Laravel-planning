@@ -17,10 +17,10 @@ A venir
 
 ## A faire
 
-* [ ] Mettre en place des templates de planning draggable
+* [X] Mettre en place des templates de planning draggable
     * Par exemple 8H30 - 12H30 qui correspond à une matinée pour un magasin, ainsi pouvoir drag sur le calendrier ce template et choisir un employé --> Création d'un event en BDD
 * [ ] Mettre en place des repositories "propres"
-* [ ] Mettre en place un vrai système de pour la gestion des droits (Responsable -> Responsable magasin -> Employés)
+* [ ] Mettre en place un vrai système pour la gestion des droits (Responsable -> Responsable magasin -> Employés)
     * Pour le moment :
         * Employees : Table qui gère les employés (En lien avec user_id)
         * Users : table qui gère les deux types de responsables avec un champ type (Admin | Magasin)

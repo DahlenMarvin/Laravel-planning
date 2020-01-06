@@ -172,7 +172,7 @@ class PlanningController extends Controller
             $planning->date = $request->get('date') . "T08:30";
             $planning->date_end = $request->get('date') . "T12:30";
         } elseif ($request->get('event') == "Après-midi") {
-            $planning->date = $request->get('date') . "T13:30";
+            $planning->date = $request->get('date') . "T14:30";
             $planning->date_end = $request->get('date') . "T19:30";
         } else {
             $planning->date = $request->get('date') . "T08:30";

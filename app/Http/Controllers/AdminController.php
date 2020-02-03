@@ -37,10 +37,7 @@ class AdminController extends Controller
 
         $arrayhoursPerEmployee = $this->repository->recupHoursEmployees($request->get('user_id'), $start, $end);
 
-
-
-
-        return view('admin.index', compact('employees', 'plannings', 'arrayhoursPerEmployee'));
+        return view('planning.index', compact('employees', 'plannings', 'arrayhoursPerEmployee'));
 
     }
 

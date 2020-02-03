@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Employee;
 use App\Planning;
 use App\Repository\AppRepository;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
@@ -78,8 +79,12 @@ class PlanningController extends Controller
      */
     public function show($id)
     {
-        $employees = Employee::all();
         $planning = Planning::find($id);
+        // On récupère le magasin de l'employé (user_id)
+        $idEmployee = $planning->employee_id;
+        $employee = Employee::find($idEmployee);
+        $magasin = User::find($employee->user_id);
+        $employees = Employee::where('user_id', $magasin->id)->get();
         return view('planning.show', compact('planning','employees'));
     }
 

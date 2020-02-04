@@ -159,6 +159,7 @@
                 eventLimit: true,
                 locale: 'fr',
                 weekNumbers: true,
+                firstDay: 1,
                 events : [
                     @foreach($plannings as $planning)
                     {

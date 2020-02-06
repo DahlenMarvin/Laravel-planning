@@ -23,6 +23,7 @@ Route::resource('planning', 'PlanningController');
 
 Route::get('updateHours', 'PlanningController@updateHours')->name('planning.updateHours');
 Route::post('addEvent', 'PlanningController@addEvent')->name('planning.addEvent');
+Route::get('planning/duplicate/{weekNumber}/{year}/{idPlanning}/{weekToDuplicate}', 'PlanningController@duplicate')->name('planning.duplicate');
 
 // Gestion des routes admin
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){

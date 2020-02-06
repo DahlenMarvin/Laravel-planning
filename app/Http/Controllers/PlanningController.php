@@ -34,6 +34,7 @@ class PlanningController extends Controller
         $employees = Employee::where('user_id', '=', Auth::user()->id)->get();
         $employeesIds = Employee::where('user_id', '=', Auth::user()->id)->pluck('id')->toArray();
         $plannings = Planning::whereIn('employee_id', $employeesIds)->get();
+        $idPlanning = Auth::user()->id;
 
         //On calcul le quota actuel du mois par vendeuse
         $start = new Carbon('first day of this month');
@@ -42,7 +43,7 @@ class PlanningController extends Controller
         $arrayhoursPerEmployee = $this->repository->recupHoursEmployees(Auth::user()->id, $start, $end->addDay());
 
 
-        return view('planning.index', compact('employees', 'plannings', 'arrayhoursPerEmployee'));
+        return view('planning.index', compact('employees', 'plannings', 'arrayhoursPerEmployee', 'idPlanning'));
     }
 
     /**
@@ -186,6 +187,58 @@ class PlanningController extends Controller
         $planning->employee()->associate($request->get('employee_id'));
         $planning->save();
         return 0;
+    }
+
+    /**
+     * @param $weeknumber // Numéro de la semaine
+     * @param $title // On récupère la semaine au moment du clique sur le bouton dupliquer
+     * @param $idMagasin // Id du magasin
+     * @param $weekToDuplicate // Semaine sur laquelle on doit faire la duplication
+     * @return string
+     */
+    public function duplicate($weeknumber, $title, $idMagasin, $weekToDuplicate) {
+
+        //On reformate correctement les variables
+        $weekNumber = substr($weeknumber, -1);
+        $year = substr($title, -4);
+        $weekPaste = explode('-',$weekToDuplicate);
+        $events = [];
+
+        //On récupère les événements du planning sur la période donnée
+        $date = Carbon::now();
+        $date->setISODate($year,$weekNumber);
+
+        $employeesMag = Employee::where('user_id', $idMagasin)->get();
+
+        foreach ($employeesMag as $employee) {
+            $plannings = Planning::where('employee_id', $employee->id)->where('date', '>', $date->startOfWeek()->format('Y-m-d') . "T00:00")->where('date_end', '<', $date->endOfWeek()->format('Y-m-d') . "T23:59")->get();
+            foreach ($plannings as $planning) {
+                array_push($events, $planning);
+            }
+        }
+
+        //On copie les events en modifiant la date par rapport à la date de demande
+        // On calcule la différence en jour
+        // On fait la date de copie + le nombre de jour en diff
+        $firstDayPaste = explode('|',$weekPaste[0]);
+        $firstDayPaste = Carbon::create($firstDayPaste[2],$firstDayPaste[1],$firstDayPaste[0],0,0,0,'Europe/Paris');
+
+        $diffInDays = $firstDayPaste->diffInDays($date->startOfWeek()) + 1;
+
+        foreach($events as $planning) {
+            //On créée le nouveau planning avec X jours de plus celon diffInDays
+            $date = Carbon::parse($planning->date);
+            $date_end = Carbon::parse($planning->date_end);
+            //On ajoute la ligne dans la BDD
+            $bdd = new Planning();
+            $bdd->date = $date->addDays($diffInDays);
+            $bdd->date_end = $date_end->addDays($diffInDays);
+            $bdd->employee()->associate($planning->employee_id);
+            $bdd->save();
+        }
+
+        dd($diffInDays);
+
     }
 
 }

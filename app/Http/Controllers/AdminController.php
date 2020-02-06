@@ -36,8 +36,9 @@ class AdminController extends Controller
         $end = new Carbon('last day of this month');
 
         $arrayhoursPerEmployee = $this->repository->recupHoursEmployees($request->get('user_id'), $start, $end);
+        $idPlanning = $request->get('user_id');
 
-        return view('planning.index', compact('employees', 'plannings', 'arrayhoursPerEmployee'));
+        return view('planning.index', compact('employees', 'plannings', 'arrayhoursPerEmployee', 'idPlanning'));
 
     }
 

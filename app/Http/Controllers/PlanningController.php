@@ -237,7 +237,7 @@ class PlanningController extends Controller
             $bdd->save();
         }
 
-        dd($diffInDays);
+        return Redirect::to("/planning")->withSuccess('Semaine dupliquée');
 
     }
 

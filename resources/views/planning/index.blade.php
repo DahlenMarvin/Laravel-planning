@@ -106,13 +106,13 @@
                         <div class="form-group row">
                             <label for="date" class="col-sm-2 col-form-label">Date début</label>
                             <div class="col-sm-10">
-                                <input type="datetime-local" class="date form-control" id="date" name="date">
+                                <input type="datetime-local" class="date form-control" id="date" name="date" value="2018-06-12T19:30">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="date_end" class="col-sm-2 col-form-label">Date fin</label>
                             <div class="col-sm-10">
-                                <input type="datetime-local" class="date form-control" id="date_end" name="date_end">
+                                <input type="datetime-local" class="date_end form-control" id="date_end" name="date_end">
                             </div>
                         </div>
                 </div>
@@ -194,7 +194,20 @@
                     @endforeach
                 ],
                 dateClick: function(info) {
-                    $('.date').val(info.dateStr + 'T09:00');
+                    var jj = info.date.getDate();
+                    var mm = info.date.getMonth();
+                    var aaaa = info.date.getFullYear();
+                    var hour = info.date.getHours();
+                    var minut = info.date.getMinutes();
+
+                    //Calcul des inférieurs à 10
+                    jj < 10 ? jj = "0" + jj : jj;
+                    mm < 10 ? mm = "0" + mm : mm;
+                    hour < 10 ? hour = "0" + hour : hour;
+                    minut < 10 ? minut = "0" + minut : minut;
+                    $('.date').val(aaaa+'-'+mm+'-'+jj+'T'+hour+':'+minut);
+                    hour = parseInt(hour) + 4;
+                    $('.date_end').val(aaaa+'-'+mm+'-'+jj+'T'+hour+':'+minut);
                     $('#basicExampleModal').modal();
                 },
                 drop: function(info) {

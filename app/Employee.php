@@ -32,4 +32,12 @@ class Employee extends Model
         return $this->hasMany('App\Signature');
     }
 
+    /**
+     * Get the activities
+     */
+    public function activities()
+    {
+        return $this->hasMany('App\Activity');
+    }
+
 }

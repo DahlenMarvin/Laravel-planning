@@ -2,8 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Activity;
+use App\Employee;
 use App\Planning;
 use App\Signature;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -40,7 +43,7 @@ class generateSignatureForEmployee extends Command
      */
     public function handle()
     {
-        $start = microtime();
+        $nSignatureAdd = 0;
         // Il faut vérifier si une semaine est terminée et s'il existe des events pour cette semaine
         // S'il existe des events on récupère l'id employée et on lui ajoute une semaine a faire validée dans la table Signatures
         $plannings = Planning::all();
@@ -58,10 +61,10 @@ class generateSignatureForEmployee extends Command
                     'nSemaine' => $date,
                     'etat' => "En cours"
                 ]);
+                $nSignatureAdd++;
+                Activity::make("Création d'une nouvelle signature semaine n°" . $date, User::find(24), Employee::find($planning->employee_id), "POST", "Command : generateSignatureForEmployee", "", "", "", "", "");
             }
         }
-
-        //Mettre en place la partie gestion des activity
-
+        Activity::make("Création de " . $nSignatureAdd . "signature(s)" , null, null, "POST", "Command : generateSignatureForEmployee", "", "", "", "", "");
     }
 }

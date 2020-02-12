@@ -6,4 +6,4 @@ $_SERVER['argv'] = [
 ];
 
 // On lance artisan
-require __DIR__.'/artisan'; 
+require __DIR__.'/artisan';

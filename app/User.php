@@ -53,4 +53,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Signature');
     }
 
+    /**
+     * Get the activities
+     */
+    public function activities()
+    {
+        return $this->hasMany('App\Activity');
+    }
+
 }

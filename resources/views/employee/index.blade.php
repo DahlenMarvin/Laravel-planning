@@ -11,6 +11,9 @@
         <div id="showTableEmployees">
             @if(!empty($employees))
             <table class="table table-dark">
+                <col width="30%">
+                <col width="30%">
+                <col width="40%">
                 <thead>
                 <tr>
                     <th scope="col">Nom</th>
@@ -24,11 +27,12 @@
                             <th>{{$employee->name}}</th>
                             <td>{{$employee->lastname}}</td>
                             <td>
-                                <form action="{{ route('employee.destroy', $employee)}}" method="post">
+                                <form action="{{ route('employee.destroy', $employee)}}" method="post" style="float: left">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger" type="submit"><i class="fas fa-times-circle"> Supprimer</i> </button>
                                 </form>
+                                <a class="btn btn-warning" href="{{ route('employee.updatePassword', $employee) }}" style="margin-left: 10px"><i class="fas fa-redo-alt"> Générer nouveau mot de passe</i> </a>
                             </td>
                         </tr>
                     @endforeach

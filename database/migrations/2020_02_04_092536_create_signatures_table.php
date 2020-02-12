@@ -15,6 +15,12 @@ class CreateSignaturesTable extends Migration
     {
         Schema::create('signatures', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('user_id');
+            $table->integer('employee_id');
+            $table->string('user_hasSigned')->nullable();
+            $table->string('employee_hasSigned')->nullable();
+            $table->integer('nSemaine');
+            $table->string('etat');
             $table->timestamps();
         });
     }

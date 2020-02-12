@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Employee;
 use App\User;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Psy\Command\Command;
 
 class EmployeeController extends Controller
 {
@@ -37,7 +40,7 @@ class EmployeeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -93,7 +96,7 @@ class EmployeeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function destroy($id)
     {
@@ -101,5 +104,15 @@ class EmployeeController extends Controller
        $employee->delete();
 
         return Redirect::to("/employee")->withSuccess('Employé supprimé');
+    }
+
+    /**
+     * @param Employee $employee
+     * @return RedirectResponse
+     */
+    public function updatePassword($employee) {
+        $employee = Employee::find($employee);
+        Artisan::call('employee:password', ['employee_id' => $employee->id]);
+        return Redirect::to("/employee")->withSuccess("Mot de passe généré avec succés !");
     }
 }

@@ -45,4 +45,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Employee');
     }
 
+    /**
+     * Get the signatures
+     */
+    public function signatures()
+    {
+        return $this->hasMany('App\Signature');
+    }
+
 }

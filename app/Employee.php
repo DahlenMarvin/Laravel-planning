@@ -24,4 +24,12 @@ class Employee extends Model
         return $this->hasMany('App\Planning');
     }
 
+    /**
+     * Get the signatures
+     */
+    public function signatures()
+    {
+        return $this->hasMany('App\Signature');
+    }
+
 }

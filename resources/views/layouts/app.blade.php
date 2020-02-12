@@ -62,6 +62,9 @@
                         @else
                             @if(\Illuminate\Support\Facades\Auth::user()->type == "Magasin")
                                 <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('signature.index') }}"><i class="fas fa-signature"></i> Signature</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('employee.index') }}"><i class="fas fa-users-cog"></i> Les employés</a>
                                 </li>
                                 <li class="nav-item">

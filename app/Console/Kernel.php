@@ -24,8 +24,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        // Vos schedules
+        //$schedule->command('employee:signature')->weeklyOn(1, '1:00');
+        $schedule->command('employee:signature')->hourly();
+
+        // À rajouter à la fin de la méthode après la déclaration de vos schedules
+        $this->scheduleRunsHourly($schedule);
     }
 
     /**
@@ -38,5 +42,12 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
+    }
+
+    protected function scheduleRunsHourly(Schedule $schedule)
+    {
+        foreach ($schedule->events() as $event) {
+            $event->expression = substr_replace($event->expression, '*', 0, 1);
+        }
     }
 }

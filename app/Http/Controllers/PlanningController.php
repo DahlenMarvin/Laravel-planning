@@ -211,7 +211,7 @@ class PlanningController extends Controller
         $employeesMag = Employee::where('user_id', $idMagasin)->get();
 
         foreach ($employeesMag as $employee) {
-            $plannings = Planning::where('employee_id', $employee->id)->where('date', '>', $date->startOfWeek()->format('Y-m-d') . "T00:00")->where('date_end', '<', $date->endOfWeek()->format('Y-m-d') . "T23:59")->get();
+            $plannings = Planning::where('employee_id', $employee->id)->where('date', '>=', $date->startOfWeek()->format('Y-m-d H:i:s'))->where('date_end', '<=', $date->endOfWeek()->format('Y-m-d H:i:s'))->get();
             foreach ($plannings as $planning) {
                 array_push($events, $planning);
             }

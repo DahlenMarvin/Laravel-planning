@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     {
         // Vos schedules
         //$schedule->command('employee:signature')->weeklyOn(1, '1:00');
-        $schedule->command('employee:signature')->hourly();
+        $schedule->command('employee:signature')->dailyAt('20:00');
 
         // À rajouter à la fin de la méthode après la déclaration de vos schedules
         $this->scheduleRunsHourly($schedule);

@@ -31,6 +31,7 @@
 
 @section('content')
 
+    <!--
     <div style="float: left; margin-left: 5%">
             <table class="table table-bordered" id="TableHours">
                 <thead>
@@ -43,14 +44,14 @@
                 </tr>
                 </thead>
                 <tbody id="nbHours">
-                @foreach($arrayhoursPerEmployee as $array)
-                    @foreach($array as $k => $v)
+                @ foreach($arrayhoursPerEmployee as $array)
+                    @ foreach($array as $k => $v)
                         <tr>
-                            <th>{{ $k }} </th>
-                            <td>{{ $v }} heures</td>
+                            <th>{ { $k }} </th>
+                            <td>{ { $v }} heures</td>
                         </tr>
-                    @endforeach
-                @endforeach
+                    @ endforeach
+                @ endforeach
 
                 </tbody>
             </table>
@@ -62,9 +63,9 @@
             </p>
             <label for="employee">Employé</label>
             <select name="employee_id" id="employee_id" class="form-control">
-                @foreach($employees as $employe)
-                    <option value="{{ $employe->id }}">{{ $employe->name . ' ' . $employe->lastname }}</option>
-                @endforeach
+                @ foreach($employees as $employe)
+                    <option value="{ { $employe->id }}">{ { $employe->name . ' ' . $employe->lastname }}</option>
+                @ endforeach
             </select>
             <div class='fc-event'>Matin</div>
             <div class='fc-event'>Après-midi</div>
@@ -72,7 +73,7 @@
         </div>
 
     </div>
-
+    -->
     <div class="container">
 
         <div id="calendar"></div>
@@ -137,6 +138,7 @@
             var calendarEl = document.getElementById('calendar');
             var montName = document.getElementsByClassName('fc-center');
             var Draggable = FullCalendarInteraction.Draggable;
+            /*
             var containerEl = document.getElementById('external-events');
             new Draggable(containerEl, {
                 itemSelector: '.fc-event',
@@ -148,7 +150,7 @@
                     };
                 }
             });
-
+            */
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: [ 'interaction', 'timeGrid' ],
                 defaultView: 'timeGridWeek',

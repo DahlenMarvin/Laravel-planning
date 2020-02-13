@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Signature extends Model
 {
-    protected $fillable = ['user_id', 'employee_id', 'user_hasSigned', 'employee_hasSigned', 'nSemaine', 'etat'];
+    protected $fillable = ['user_id', 'employee_id', 'user_hasSigned', 'employee_hasSigned', 'nSemaine', 'nAnnee', 'etat'];
 
     /**
      * Get the User

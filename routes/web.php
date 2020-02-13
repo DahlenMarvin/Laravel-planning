@@ -25,10 +25,15 @@ Route::post('addEvent', 'PlanningController@addEvent')->name('planning.addEvent'
 Route::get('planning/duplicate/{weekNumber}/{year}/{idPlanning}/{weekToDuplicate}', 'PlanningController@duplicate')->name('planning.duplicate');
 
 Route::get('signature', 'SignatureController@index')->name('signature.index');
-Route::post('signature/store', 'SignatureController@store')->name('signature.store');
+Route::post('signature/store/{isAdmin}', 'SignatureController@store')->name('signature.store');
 Route::post('signature/check', 'SignatureController@check')->name('signature.check');
 Route::get('signature/tableProgress/{employee_id}', 'SignatureController@tableProgress')->name('signature.tableProgress');
-
+Route::get('signature/validateWeek/{employee_id}/{nSemaine}/{nAnnee}', 'SignatureController@validateWeek')->name('signature.validateWeek');
+Route::get('signature/validateWeekForAdmin/{employee_id}/{nSemaine}/{nAnnee}', 'SignatureController@validateWeekForAdmin')->name('signature.validateWeekForAdmin');
+Route::get('signature/validatePlanning', 'SignatureController@validatePlanning')->name('signature.validatePlanning');
+Route::post('signature/showWeekValidate', 'SignatureController@showWeekValidate')->name('signature.showWeekValidate');
+Route::get('signature/showWeek', 'SignatureController@showWeek')->name('signature.showWeek');
+Route::post('signature/updateName', 'SignatureController@updateName')->name('signature.updateName');
 
 // Gestion des routes admin
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){

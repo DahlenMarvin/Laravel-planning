@@ -9,9 +9,11 @@ use App\Signature;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Jenssegers\Agent\Agent;
 
 class generateSignatureForEmployee extends Command
 {
+
     /**
      * The name and signature of the console command.
      *
@@ -52,19 +54,21 @@ class generateSignatureForEmployee extends Command
             // On vérifie si la semaine est terminée
             // Si le dernier jour de la semaine est inférieur à aujourd'hui
             $date = Carbon::parse($planning->date)->weekOfYear;
-            $exist = Signature::where('user_id', 24)->where('employee_id', $planning->employee_id)->where('nSemaine', $date)->get();
+            $annee = Carbon::parse($planning->date)->year;
+            $exist = Signature::where('user_id', 24)->where('employee_id', $planning->employee_id)->where('nSemaine', $date)->where('nAnnee', $annee)->get();
             if($exist->count() == 0) {
                 //Il n'existe pas donc on le créée dans la base
                 Signature::create([
                     'user_id' => 24,
                     'employee_id' => $planning->employee_id,
                     'nSemaine' => $date,
+                    'nAnnee' => $annee,
                     'etat' => "En cours"
                 ]);
                 $nSignatureAdd++;
-                Activity::make("Création d'une nouvelle signature semaine n°" . $date, User::find(24), Employee::find($planning->employee_id), "POST", "Command : generateSignatureForEmployee", "", "", "", "", "");
+                Activity::make("Création d'une nouvelle signature semaine n°" . $date . " | Année " . $annee, User::find(24), Employee::find($planning->employee_id), "POST", "Command : generateSignatureForEmployee", "Tache automatique", "Tache automatique", "Tache automatique", "Tache automatique");
             }
         }
-        Activity::make("Création de " . $nSignatureAdd . "signature(s)" , null, null, "POST", "Command : generateSignatureForEmployee", "", "", "", "", "");
+        Activity::make("Création de " . $nSignatureAdd . "signature(s)" , null, null, "POST", "Command : generateSignatureForEmployee", "Tache automatique", "Tache automatique", "Tache automatique", "Tache automatique");
     }
 }

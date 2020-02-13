@@ -30,13 +30,13 @@ class Activity extends Model
      * @param Employee $employee
      * @param String $method
      * @param String $route
-     * @param String $ip_address
      * @param String $browser_name
      * @param String $platform_name
      * @param String $device_family
      * @param String $device_model
      */
-    static function make($comment, $user, $employee, $method, $route, $ip_address, $browser_name, $platform_name, $device_family, $device_model) {
+    static function make($comment, $user, $employee, $method, $route, $browser_name, $platform_name, $device_family, $device_model) {
+        $request = request();
         if(is_null($user) && !is_null($employee)) {
             $activity = new Activity();
             $activity->comment = $comment;
@@ -44,7 +44,7 @@ class Activity extends Model
             $activity->employee()->associate($employee);
             $activity->method = $method;
             $activity->route = $route;
-            $activity->ip_address = $ip_address;
+            $activity->ip_address = $request->ip();
             $activity->browser_name = $browser_name;
             $activity->platform_name = $platform_name;
             $activity->device_family = $device_family;
@@ -57,7 +57,7 @@ class Activity extends Model
             $activity->employee_id = null;
             $activity->method = $method;
             $activity->route = $route;
-            $activity->ip_address = $ip_address;
+            $activity->ip_address = $request->ip();
             $activity->browser_name = $browser_name;
             $activity->platform_name = $platform_name;
             $activity->device_family = $device_family;
@@ -70,7 +70,7 @@ class Activity extends Model
             $activity->employee()->associate($employee);
             $activity->method = $method;
             $activity->route = $route;
-            $activity->ip_address = $ip_address;
+            $activity->ip_address = $request->ip();
             $activity->browser_name = $browser_name;
             $activity->platform_name = $platform_name;
             $activity->device_family = $device_family;

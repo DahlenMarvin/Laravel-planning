@@ -87,9 +87,30 @@
                                         </form>
                                     </div>
                                 </li>
+                            @elseif(\Illuminate\Support\Facades\Auth::user()->type == "Comptable")
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('signature.showWeek') }}"><i class="fas fa-signature"></i> Sortir une signature</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        {{ Auth::user()->name }} <span class="caret"></span>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                </li>
                             @elseif(\Illuminate\Support\Facades\Auth::user()->type == "Admin")
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('signature.index') }}"><i class="fas fa-signature"></i> Signature</a>
+                                    <a class="nav-link" href="{{ route('signature.validatePlanning') }}"><i class="fas fa-signature"></i> Validation des plannings</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.showFormChoosePlanning') }}"><i class="fas fa-users-cog"></i> Les plannings</a>

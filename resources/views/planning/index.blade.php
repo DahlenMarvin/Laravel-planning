@@ -196,20 +196,12 @@
                     @endforeach
                 ],
                 dateClick: function(info) {
-                    var jj = info.date.getDate();
-                    var mm = info.date.getMonth();
-                    var aaaa = info.date.getFullYear();
-                    var hour = info.date.getHours();
-                    var minut = info.date.getMinutes();
 
-                    //Calcul des inférieurs à 10
-                    jj < 10 ? jj = "0" + jj : jj;
-                    mm < 10 ? mm = "0" + mm : mm;
-                    hour < 10 ? hour = "0" + hour : hour;
-                    minut < 10 ? minut = "0" + minut : minut;
-                    $('.date').val(aaaa+'-'+mm+'-'+jj+'T'+hour+':'+minut);
-                    hour = parseInt(hour) + 4;
-                    $('.date_end').val(aaaa+'-'+mm+'-'+jj+'T'+hour+':'+minut);
+                    var string = info.dateStr;
+
+                    //$('.date').val(aaaa+'-'+mm+'-'+jj+'T'+hour+':'+minut);
+                    $('.date').val(string.substring(0,16));
+                    $('.date_end').val(string.substring(0,16));
                     $('#basicExampleModal').modal();
                 },
                 drop: function(info) {

@@ -25,3 +25,25 @@ A venir
         * Employees : Table qui gère les employés (En lien avec user_id)
         * Users : table qui gère les deux types de responsables avec un champ type (Admin | Magasin)
 * [ ] Delete la route "Register" car c'est l'administrateur qui doit créer un nouveau "Magasin"
+* [ ] Ajouter un champs commentaire pour la coordinatrice
+* [ ] Si planning pour une semaine précedente on refuse
+* [ ] Gestion d'un employé approfondie
+    * [ ] Modifier nom / prénom
+    * [ ] Récapitulatif des heures
+    * [ ] Type de contrat
+    * [ ] Calcul des heures en + / - 
+* [ ] Si la vendeuse signa sa semaine ==> On ne peut plus modifier les heures
+
+# Changelog
+
+Evolution de l'application
+
+## [1.0.1] - 19-02-2020
+
+### Ajouter 
+
+- Rien
+
+### Modifier
+
+- Au clique sur l'ajout d'un planning, le mois proposé de base était Janvier. Maintenant on propose la bonne date avec le bon mois

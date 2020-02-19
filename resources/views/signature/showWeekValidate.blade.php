@@ -9,8 +9,14 @@
 @endsection
 
 @section('content')
+<<<<<<< HEAD
     <div class="container">
         <h2 style="text-align: center">Semaine n°{{$signature->nSemaine}} | Année {{$signature->nAnnee}} | Employé : {{ $employee->name . " " . $employee->lastname }}</h2>
+=======
+
+    <div class="container">
+
+>>>>>>> master
         <table class="table table-bordered">
             <thead>
             <tr style="text-align: center">
@@ -27,6 +33,7 @@
             @endforeach
             </tbody>
         </table>
+<<<<<<< HEAD
         @if($signature->user_hasSigned != null && $signature->employee_hasSigned != null)
             <div class="form-group row">
                 <div class="col-sm-12 text-center">
@@ -56,6 +63,25 @@
             </p>
         @endif
     </div>
+=======
+
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <b>Le commentaire de l'employé :</b>
+                <p>
+                    {{$signature->comment}}
+                </p>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <img src="{{ url('storage/signature/'.$signature->user_hasSigned) }}" alt="SignatureCoordinatrice" width="300px">
+            <img src="{{ asset("storage/signature/" . $signature->employee_hasSigned) }}" alt="SignatureEmployee" width="300px">
+        </div>
+
+    </div>
+
+>>>>>>> master
 @endsection
 
 @section('js')

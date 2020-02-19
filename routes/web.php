@@ -33,7 +33,10 @@ Route::get('signature/validateWeekForAdmin/{employee_id}/{nSemaine}/{nAnnee}', '
 Route::get('signature/validatePlanning', 'SignatureController@validatePlanning')->name('signature.validatePlanning');
 Route::post('signature/showWeekValidate', 'SignatureController@showWeekValidate')->name('signature.showWeekValidate');
 Route::get('signature/showWeek', 'SignatureController@showWeek')->name('signature.showWeek');
+<<<<<<< HEAD
 Route::post('signature/updateName', 'SignatureController@updateName')->name('signature.updateName');
+=======
+>>>>>>> master
 
 // Gestion des routes admin
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){

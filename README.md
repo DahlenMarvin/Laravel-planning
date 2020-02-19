@@ -38,11 +38,11 @@ A venir
 
 Evolution de l'application
 
-## [1.0.1] - 19-02-2020
+## [1.0.1] - 19-02-2020 + 
 
 ### Ajouter 
 
-- Rien
+- Mise en place d'une vue pour le détail d'un employé (employee.profil)
 
 ### Modifier
 

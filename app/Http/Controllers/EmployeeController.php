@@ -115,4 +115,13 @@ class EmployeeController extends Controller
         Artisan::call('employee:password', ['employee_id' => $employee->id]);
         return Redirect::to("/employee")->withSuccess("Mot de passe généré avec succés !");
     }
+
+    /**
+     * @param Employee $employee
+     * @return Factory|View
+     */
+    public function profil($employee) {
+        $employee = Employee::find($employee);
+        return view('employee.profil', compact('employee'));
+    }
 }

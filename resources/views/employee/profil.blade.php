@@ -1,0 +1,135 @@
+@extends('layouts/app')
+
+@section('content')
+
+    <div class="container">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <!-- Row -->
+        <div class="row">
+            <!-- Column -->
+            <div class="col-lg-4 col-xlg-3 col-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div style="text-align: center;">
+                            <h4 class="card-title mt-2">{{ $employee->name . ' ' . $employee->lastname }}</h4>
+                            <h6 class="card-subtitle">{{ $employee->user->name }}</h6> <br>
+                            <h6 class="card-subtitle">{{ $employee->user->email }}</h6>
+                        </div>
+                    </div>
+                    <div>
+                        <hr>
+                    </div>
+                    <div class="card-body">
+                        <small class="text-muted">Type de contrat </small>
+                        <h6>En cours de développement</h6>
+                        <small class="text-muted">État des heures </small>
+                        <h6>En cours de développement</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <!-- Column -->
+            <div class="col-lg-8 col-xlg-9 col-md-7">
+                <div class="card">
+                    <!-- Tabs -->
+                    <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#last-month"
+                               role="tab" aria-controls="pills-profile" aria-selected="true">Historiques</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#previous-month"
+                               role="tab" aria-controls="pills-setting" aria-selected="false">Paramètres</a>
+                        </li>
+                    </ul>
+                    <!-- Tabs -->
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="last-month" role="tabpanel"
+                             aria-labelledby="pills-profile-tab">
+                            <div class="card-body">
+                                <div class="profiletimeline mt-2">
+                                    <div class="sl-item">
+                                        <div class="sl-left"> </div>
+                                        <div class="sl-right">
+                                            <div><span class="sl-date">Le 13/02/2020</span>
+                                                <p>
+                                                    Création d'une nouvelle signature semaine n°2 | Année 2020
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="sl-item">
+                                        <div class="sl-left"> </div>
+                                        <div class="sl-right">
+                                            <div><span class="sl-date">Le 13/02/2020</span>
+                                                <p>
+                                                    Création d'une nouvelle signature semaine n°2 | Année 2020
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="previous-month" role="tabpanel"
+                             aria-labelledby="pills-setting-tab">
+                            <div class="card-body">
+                                <form class="form-horizontal form-material">
+                                    <div class="form-group">
+                                        <p class="text-muted">Actuellement cet employé est actif dans le magasin, si cette personne ne travaille plus dans votre magasin vous pouvez la désactiver en cliquant sur le bouton ci-dessous.</p>
+                                        <form action="{{ route('employee.destroy', $employee)}}" method="post" style="float: left">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger" type="submit"><i class="fas fa-times-circle"> Désactiver</i> </button>
+                                        </form>
+                                    </div>
+                                    <div class="form-group">
+                                        <p class="text-muted">Si {{ $employee->name . ' ' . $employee->lastname }} ne se souvient plus de son mot de passe, vous pouvez en générer un nouveau en cliquant sur le lien ci-dessous.</p>
+                                        <a class="btn btn-warning" href="{{ route('employee.updatePassword', $employee) }}"><i class="fas fa-redo-alt"> Générer nouveau mot de passe</i> </a>
+                                    </div>
+                                    <form action="">
+                                        <fieldset>Mettre à jour ses informations</fieldset>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label" for="name">Nom</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" value="{{$employee->name}}" class="form-control form-control-line" id="name" name="name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label" for="lastname">Prénom</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" value="{{$employee->lastname}}" class="form-control form-control-line" id="lastname" name="lastname">
+                                            </div>
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <div class="col-sm-10">
+                                                <button class="btn btn-success">Mettre à jour</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+        </div>
+        <!-- Row -->
+        <!-- ============================================================== -->
+        <!-- End PAge Content -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right sidebar -->
+        <!-- ============================================================== -->
+        <!-- .right-sidebar -->
+        <!-- ============================================================== -->
+        <!-- End Right sidebar -->
+        <!-- ============================================================== -->
+    </div>
+
+
+@endsection

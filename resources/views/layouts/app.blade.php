@@ -53,13 +53,8 @@
                         @guest
                             <a class="nav-link" href="{{ route('signature.index') }}"><i class="fas fa-signature"></i> Signature</a>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-sign-in-alt"> {{ __('Se connecter') }}</i></a>
                             </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
                         @else
                             @if(\Illuminate\Support\Facades\Auth::user()->type == "Magasin")
                                 <li class="nav-item">

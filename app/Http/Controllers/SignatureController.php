@@ -125,7 +125,7 @@ class SignatureController extends Controller
         $plannings = Planning::where('employee_id', $employee->id)->where('date', '>=', $startOfWeek)->where('date_end', '<=', $endOfWeek)->get();
         $signature = Signature::where('employee_id', $employee->id)->where('nSemaine', $request->get('nSemaine'))->where('nAnnee', $request->get('nAnnee'))->first();
 
-<<<<<<< HEAD
+
         if($plannings->count() == 0 || $signature->count() == 0) {
             return Redirect::route("signature.showWeek")->withFail("Pas encore de planning pour cette période !");
         }
@@ -143,9 +143,7 @@ class SignatureController extends Controller
             $return .= '</tr>';
         }
         return $return;
-=======
-        return view('signature.showWeekValidate', compact('plannings', 'signature', 'employee'));
->>>>>>> master
+
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Activity;
 use App\Employee;
 use App\User;
 use Illuminate\Contracts\View\Factory;
@@ -89,7 +90,14 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $employee = Employee::find($id);
+        $employee->name = $request->get('name');
+        $employee->lastname = $request->get('lastname');
+        $employee->color = $request->get('color');
+        $employee->save();
+
+        return Redirect::to("/employee")->withSuccess("Information mise à jour avec succès !");
+
     }
 
     /**
@@ -122,6 +130,37 @@ class EmployeeController extends Controller
      */
     public function profil($employee) {
         $employee = Employee::find($employee);
-        return view('employee.profil', compact('employee'));
+        $activities = Activity::where('employee_id', $employee->id)->take(10)->get();
+        return view('employee.profil', compact('employee', 'activities'));
+    }
+
+    /**
+     * Desactivate Employee
+     *
+     * @param  int  $id
+     * @return RedirectResponse
+     */
+    public function desactivate($id)
+    {
+        $employee = Employee::find($id);
+        $employee->state = 0;
+        $employee->save();
+
+        return Redirect::to("/employee")->withSuccess('Employé désactivé avec succès');
+    }
+
+    /**
+     * Activate Employee
+     *
+     * @param  int  $id
+     * @return RedirectResponse
+     */
+    public function activate($id)
+    {
+        $employee = Employee::find($id);
+        $employee->state = 1;
+        $employee->save();
+
+        return Redirect::to("/employee")->withSuccess('Employé activé avec succès');
     }
 }

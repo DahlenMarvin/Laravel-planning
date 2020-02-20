@@ -32,7 +32,9 @@ A venir
     * [ ] Récapitulatif des heures
     * [ ] Type de contrat
     * [ ] Calcul des heures en + / - 
-* [ ] Si la vendeuse signa sa semaine ==> On ne peut plus modifier les heures
+* [ ] Si la vendeuse signe sa semaine ==> On ne peut plus modifier les heures
+* [ ] Une option congés payés avec choix de la journée et l'employé
+* [ ] Une couleur par employé sur le planning
 
 # Changelog
 

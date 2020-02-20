@@ -36,6 +36,8 @@ Route::get('signature/showWeek', 'SignatureController@showWeek')->name('signatur
 Route::post('signature/updateName', 'SignatureController@updateName')->name('signature.updateName');
 
 Route::get('employee/profil/{employee}', 'EmployeeController@profil')->name('employee.profil');
+Route::get('employee/desactivate/{employee}', 'EmployeeController@desactivate')->name('employee.desactivate');
+Route::get('employee/activate/{employee}', 'EmployeeController@activate')->name('employee.activate');
 
 // Gestion des routes admin
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){

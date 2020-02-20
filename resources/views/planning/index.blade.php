@@ -191,6 +191,7 @@
                             start : '{{$planning->date}}',
                             end : '{{$planning->date_end}}',
                             url : '{{route('planning.show', $planning)}}',
+                            color: '{{ $planning->employee()->get()[0]->color }}',
 
                     },
                     @endforeach

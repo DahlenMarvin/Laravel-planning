@@ -50,27 +50,19 @@
                              aria-labelledby="pills-profile-tab">
                             <div class="card-body">
                                 <div class="profiletimeline mt-2">
-                                    <div class="sl-item">
-                                        <div class="sl-left"> </div>
-                                        <div class="sl-right">
-                                            <div><span class="sl-date">Le 13/02/2020</span>
-                                                <p>
-                                                    Création d'une nouvelle signature semaine n°2 | Année 2020
-                                                </p>
+                                    @foreach($activities as $activity)
+                                        <div class="sl-item">
+                                            <div class="sl-left"> </div>
+                                            <div class="sl-right">
+                                                <div><span class="sl-date">{{ $activity->created_at }}</span>
+                                                    <p>
+                                                        {{ $activity->comment }}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <hr>
-                                    <div class="sl-item">
-                                        <div class="sl-left"> </div>
-                                        <div class="sl-right">
-                                            <div><span class="sl-date">Le 13/02/2020</span>
-                                                <p>
-                                                    Création d'une nouvelle signature semaine n°2 | Année 2020
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <hr>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -79,37 +71,46 @@
                             <div class="card-body">
                                 <form class="form-horizontal form-material">
                                     <div class="form-group">
-                                        <p class="text-muted">Actuellement cet employé est actif dans le magasin, si cette personne ne travaille plus dans votre magasin vous pouvez la désactiver en cliquant sur le bouton ci-dessous.</p>
-                                        <form action="{{ route('employee.destroy', $employee)}}" method="post" style="float: left">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-danger" type="submit"><i class="fas fa-times-circle"> Désactiver</i> </button>
-                                        </form>
+                                        @if($employee->state == 0)
+                                            <p class="text-muted">Actuellement cet employé est inactif dans le magasin, si cette personne retravaille dans votre magasin vous pouvez l'activer en cliquant sur le bouton ci-dessous.</p>
+                                            <a class="btn btn-primary" href="{{ route('employee.activate', $employee) }}"><i class="fab fa-vuejs"> Activer</i> </a>
+                                        @else
+                                            <p class="text-muted">Actuellement cet employé est actif dans le magasin, si cette personne ne travaille plus dans votre magasin vous pouvez la désactiver en cliquant sur le bouton ci-dessous.</p>
+                                            <a class="btn btn-primary" href="{{ route('employee.desactivate', $employee) }}"><i class="fas fa-times"> Désactiver</i> </a>
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <p class="text-muted">Si {{ $employee->name . ' ' . $employee->lastname }} ne se souvient plus de son mot de passe, vous pouvez en générer un nouveau en cliquant sur le lien ci-dessous.</p>
                                         <a class="btn btn-warning" href="{{ route('employee.updatePassword', $employee) }}"><i class="fas fa-redo-alt"> Générer nouveau mot de passe</i> </a>
                                     </div>
-                                    <form action="">
-                                        <fieldset>Mettre à jour ses informations</fieldset>
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="name">Nom</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" value="{{$employee->name}}" class="form-control form-control-line" id="name" name="name">
-                                            </div>
+                                </form>
+                                <form action="{{ route('employee.update', $employee->id) }}" method="post">
+                                    @method('PUT')
+                                    @csrf
+                                    <fieldset>Mettre à jour ses informations</fieldset>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="name">Nom</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" value="{{$employee->name}}" class="form-control form-control-line" id="name" name="name">
                                         </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="lastname">Prénom</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" value="{{$employee->lastname}}" class="form-control form-control-line" id="lastname" name="lastname">
-                                            </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="lastname">Prénom</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" value="{{$employee->lastname}}" class="form-control form-control-line" id="lastname" name="lastname">
                                         </div>
-                                        <div class="form-group text-center">
-                                            <div class="col-sm-10">
-                                                <button class="btn btn-success">Mettre à jour</button>
-                                            </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="color">Couleur</label>
+                                        <div class="col-sm-10">
+                                            <input type="color" value="{{$employee->color}}" class="form-control form-control-line" id="color" name="color">
                                         </div>
-                                    </form>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <div class="col-sm-10">
+                                            <button class="btn btn-success">Mettre à jour</button>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>

@@ -34,17 +34,18 @@ A venir
     * [ ] Calcul des heures en + / - 
 * [ ] Si la vendeuse signe sa semaine ==> On ne peut plus modifier les heures
 * [ ] Une option congés payés avec choix de la journée et l'employé
-* [ ] Une couleur par employé sur le planning
+* [X] Une couleur par employé sur le planning
 
 # Changelog
 
 Evolution de l'application
 
-## [1.0.1] - 19-02-2020 + 
+## [1.0.1] - 19-02-2020 + 20-02-2020
 
 ### Ajouter 
 
-- Mise en place d'une vue pour le détail d'un employé (employee.profil)
+- Profil pour la gestion complète des informations d'un employé
+- Mise en place d'une couleur personnalisée par employé sur le planning + gestion dans le profil
 
 ### Modifier
 

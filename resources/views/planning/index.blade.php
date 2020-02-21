@@ -126,6 +126,27 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="modalHours" tabindex="-1" role="dialog" aria-labelledby="modalHours"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Récapitulatif de vos heures</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="contentModal">
+                    &nbsp;
+                </div>
+                <div class="modal-footer">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+
     <input type="hidden" name="idPlanning" id="idPlanning" value="{{ $idPlanning }}">
 
 @endsection
@@ -172,10 +193,49 @@
                         click: function() {
                             //
                         }
+                    },
+                    cp: {
+                        text: 'CP',
+                        click: function() {
+                            alert('En cours de développement')
+                        }
+                    },
+                    hours: {
+                        text: 'Vos heures',
+                        click: function() {
+
+                            var dateString = $('.fc-center').text();
+                            var weekNumberString = $('.fc-week-number span').text()
+
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+
+                            $.ajax({
+                                method: 'GET',
+                                url: '{{ route('planning.getHoursEmployees') }}',
+                                data: {
+                                    magasin_id: {{ \Illuminate\Support\Facades\Auth::user()->id }},
+                                    year: dateString.substring(dateString.length - 4),
+                                    weekNumber: weekNumberString.substring(weekNumberString.length - 1)
+                                },
+                                dataType: 'html',
+                            })
+                                .done(function(data) {
+                                    $('#contentModal').html(data);
+                                    $('#modalHours').modal();
+                                })
+                                .fail(function(data) {
+                                    console.log(data);
+                                });
+
+                        }
                     }
                 },
                 header: {
-                    left: 'prev,next today',
+                    left: 'prev,next hours cp',
                     center: 'title',
                     right: 'periode duplicate'
                 },
@@ -313,7 +373,7 @@
 
             $('.fc-periode-button').html(html);
 
-            $('.fc-button-group').on('click', function() {
+            /*$('.fc-button-group').on('click', function() {
                 $.ajax({
                     method: 'GET',
                     url: '{{ route('planning.updateHours') }}',
@@ -328,7 +388,7 @@
                 .fail(function(data) {
                     $('#TableHours').html(data);
                 });
-            });
+            });*/
 
             $('#submit').click(function() {
                 var form = $('#addEmployee');

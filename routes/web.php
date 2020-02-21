@@ -23,6 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('updateHours', 'PlanningController@updateHours')->name('planning.updateHours');
 Route::post('addEvent', 'PlanningController@addEvent')->name('planning.addEvent');
 Route::get('planning/duplicate/{weekNumber}/{year}/{idPlanning}/{weekToDuplicate}', 'PlanningController@duplicate')->name('planning.duplicate');
+Route::get('planning/getHoursEmployees', 'PlanningController@getHoursEmployees')->name('planning.getHoursEmployees');
 
 Route::get('signature', 'SignatureController@index')->name('signature.index');
 Route::post('signature/store/{isAdmin}', 'SignatureController@store')->name('signature.store');

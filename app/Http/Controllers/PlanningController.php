@@ -31,7 +31,7 @@ class PlanningController extends Controller
      */
     public function index()
     {
-        $employees = Employee::where('user_id', '=', Auth::user()->id)->get();
+        $employees = Employee::where('user_id', '=', Auth::user()->id)->where('state', '!=', 0)->get();
         $employeesIds = Employee::where('user_id', '=', Auth::user()->id)->pluck('id')->toArray();
         $plannings = Planning::whereIn('employee_id', $employeesIds)->get();
         $idPlanning = Auth::user()->id;
@@ -239,6 +239,51 @@ class PlanningController extends Controller
 
         return Redirect::to("/planning")->withSuccess('Semaine dupliquée');
 
+    }
+
+    public function getHoursEmployees(Request $request) {
+        $employees = Employee::where('user_id', $request->get('magasin_id'))->get();
+        $array = [];
+        $arrayEmployees = [];
+        $html = '';
+        $dateStart = Carbon::now();
+        $dateEnd = Carbon::now();
+        $dateStart->setISODate($request->get('year'),$request->get('weekNumber'))->startOfWeek();
+        $dateEnd->setISODate($request->get('year'),$request->get('weekNumber'))->endOfWeek()->addDay();
+        foreach ($employees as $employee) {
+            $total = 0;
+            $plannings = Planning::where('employee_id', $employee->id)->where('date','>=',$dateStart)->where('date_end','<=',$dateEnd)->orderBy('date', 'ASC')->get();
+            foreach ($plannings as $planning) {
+                $diff = Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date));
+                if(array_key_exists(substr($planning->date, 0, 10), $array)) {
+                    $total = $array[substr($planning->date, 0, 10)] + $diff;
+                    $array[substr($planning->date, 0, 10)] = $total;
+                } else  {
+                    $array[substr($planning->date, 0, 10)] = $diff;
+                }
+            }
+            $arrayEmployees[$employee->name . ' ' . $employee->lastname] = $array;
+            $array = [];
+        }
+        foreach ($arrayEmployees as $employee => $arrayEmployee) {
+            $html .= '<table class="table table-bordered text-center">';
+            $html.= '<tr>';
+            $html .= '<th colspan="2">' . $employee .'</th>';
+            $html.= '</tr>';
+            $total = 0;
+            foreach ($arrayEmployee as $date => $time) {
+                $html.= '<tr>';
+                $html .= '<td>' . $date .'</td>';
+                $html .= '<td>' . $time / 60 .' H</td>';
+                $html.= '</tr>';
+                $total = $total + $time / 60;
+            }
+            $html.= '<tr>';
+            $html .= '<th colspan="2">Total semaine : ' . $total .' H</th>';
+            $html.= '</tr>';
+            $html .= '</table>';
+        }
+        return $html;
     }
 
 }

@@ -28,7 +28,7 @@ A venir
 * [ ] Ajouter un champs commentaire pour la coordinatrice
 * [ ] Si planning pour une semaine précedente on refuse
 * [ ] Gestion d'un employé approfondie
-    * [ ] Modifier nom / prénom
+    * [X] Modifier nom / prénom / couleur
     * [ ] Récapitulatif des heures
     * [ ] Type de contrat
     * [ ] Calcul des heures en + / - 
@@ -38,7 +38,7 @@ A venir
 
 # Changelog
 
-Evolution de l'application
+Evolution de l'application par date 
 
 ## [1.0.1] - 19-02-2020 + 20-02-2020
 
@@ -46,6 +46,7 @@ Evolution de l'application
 
 - Profil pour la gestion complète des informations d'un employé
 - Mise en place d'une couleur personnalisée par employé sur le planning + gestion dans le profil
+- Affichage des heures par jour et par semaine pour la partie magasin
 
 ### Modifier
 

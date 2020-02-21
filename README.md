@@ -40,13 +40,14 @@ A venir
 
 Evolution de l'application par date 
 
-## [1.0.1] - 19-02-2020 + 20-02-2020
+## [1.0.1] - 21-02-2020
 
 ### Ajouter 
 
 - Profil pour la gestion complète des informations d'un employé
 - Mise en place d'une couleur personnalisée par employé sur le planning + gestion dans le profil
 - Affichage des heures par jour et par semaine pour la partie magasin
+- Ajout de la signature de l'employé + des heures de la semaine + de la date de saisie + d'un champs commentaire  lors de la validation de la coordinatrice
 
 ### Modifier
 

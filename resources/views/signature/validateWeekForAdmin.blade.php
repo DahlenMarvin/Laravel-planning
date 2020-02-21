@@ -29,13 +29,14 @@
 
     <div class="container">
 
-        <b>{{$employee->name . " " . $employee->lastname}}</b>
+        <b>{{$employee->name . " " . $employee->lastname}} | Heure de cette semaine : {{ $total / 60 }}H</b>
 
         <table class="table table-bordered">
             <thead>
             <tr style="text-align: center">
                 <th scope="col">Date début</th>
                 <th scope="col">Date fin</th>
+                <th scope="col">Saisie / Dernière modification</th>
             </tr>
             </thead>
             <tbody>
@@ -43,6 +44,7 @@
                     <tr style="text-align: center">
                         <td>{{ \Carbon\Carbon::parse($planning->date)->format('d/m/Y H:i:s') }}</td>
                         <td>{{ \Carbon\Carbon::parse($planning->date_end)->format('d/m/Y H:i:s') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($planning->updated_at)->format('d/m/Y H:i:s') }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -52,13 +54,20 @@
             <div class="col-sm-12">
                 Commentaire de la personne :
                 <p>
-                    <b>{{$signature->comment}}</b>
+                    <b>{{ $signature->comment != null ? $signature->comment : "Pas de commentaire"}}</b>
                 </p>
             </div>
         </div>
 
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <textarea name="comment_admin" id="comment_admin" rows="5" placeholder="Votre commentaire" class="form-control"></textarea>
+            </div>
+        </div>
+
         <div class="wrapper text-center">
-            <canvas id="signature-pad" class="signature-pad" width=400 height=200 style="border:1px solid black"></canvas>
+            <img src="{{ url("storage/signature/" . $signature->employee_hasSigned) }}" alt="SignatureEmployee" width="300px" style="float: left">
+            <canvas id="signature-pad" class="signature-pad" width=400 height=200 style="border:1px solid black; float: right"></canvas>
         </div>
 
         <div class="form-group row">
@@ -130,6 +139,7 @@
                     data: {
                         dataUri: data,
                         comment: $('#comment').val(),
+                        comment_admin: $('#comment_admin').val(),
                         employee_id: {{ $employee->id }},
                         nSemaine: $('#nSemaine').val(),
                         nAnnee: $('#nAnnee').val(),

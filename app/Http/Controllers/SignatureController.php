@@ -32,6 +32,7 @@ class SignatureController extends Controller
             //On lie la signature avec la BDD
             $signature = Signature::where('employee_id', $request->get('employee_id'))->where('nSemaine', $request->get('nSemaine'))->where('nAnnee', $request->get('nAnnee'))->first();
             $signature->user_hasSigned = $filename;
+            $signature->comment_admin = $request->get('comment_admin');
             $signature->etat = "Valider";
             $signature->save();
         } else {
@@ -94,11 +95,19 @@ class SignatureController extends Controller
         $startOfWeek->setISODate($nAnnee,$nSemaine);
         $endOfWeek->setISODate($nAnnee,$nSemaine);
         $startOfWeek = $startOfWeek->startOfWeek();
-        $endOfWeek = $endOfWeek->endOfWeek();
+        $endOfWeek = $endOfWeek->endOfWeek()->addDay();
         $signature = Signature::where('employee_id', $employee_id)->where('nSemaine', $nSemaine)->where('nAnnee', $nAnnee)->first();
         //On récupère les events de l'employée sur la semaine données en params
-        $plannings = Planning::where('employee_id', $employee_id)->where('date', '>=', $startOfWeek)->where('date_end', '<=', $endOfWeek)->get();
-        return view('signature.validateWeekForAdmin', compact('plannings', 'employee', 'nSemaine', 'nAnnee', 'signature'));
+        $plannings = Planning::where('employee_id', $employee_id)->where('date', '>=', $startOfWeek)->where('date_end', '<=', $endOfWeek)->orderBy('date', 'ASC')->get();
+
+        //Calcul des heures de la semaine
+        $total = 0;
+        foreach ($plannings as $planning) {
+            $diff = Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date));
+            $total = $total + $diff;
+        }
+
+        return view('signature.validateWeekForAdmin', compact('plannings', 'employee', 'nSemaine', 'nAnnee', 'signature', 'total'));
     }
 
     public function validatePlanning() {

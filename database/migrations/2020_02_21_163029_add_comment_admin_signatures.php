@@ -14,7 +14,7 @@ class AddCommentAdminSignatures extends Migration
     public function up()
     {
         Schema::table('signatures', function (Blueprint $table) {
-            $table->string('comment_admin')->nullable()->after('comment');
+            $table->text('comment_admin')->nullable()->after('comment');
         });
     }
 

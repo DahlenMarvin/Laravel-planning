@@ -25,7 +25,7 @@ A venir
         * Employees : Table qui gère les employés (En lien avec user_id)
         * Users : table qui gère les deux types de responsables avec un champ type (Admin | Magasin)
 * [ ] Delete la route "Register" car c'est l'administrateur qui doit créer un nouveau "Magasin"
-* [ ] Ajouter un champs commentaire pour la coordinatrice
+* [X] Ajouter un champs commentaire pour la coordinatrice
 * [ ] Si planning pour une semaine précedente on refuse
 * [ ] Gestion d'un employé approfondie
     * [X] Modifier nom / prénom / couleur
@@ -39,6 +39,22 @@ A venir
 # Changelog
 
 Evolution de l'application par date 
+
+## [1.0.2] - 24-02-2020
+
+### Ajouter 
+
+- Dans la vue sortie des signatures RH / Comptable :
+    - Ajout des heures par jour 
+    - Ajout des heures par semaine
+    - Ajout du commentaire coordinatrice
+- Ajout du magasin de l'employé dans la vue signature Coordinatrice
+
+### Modifier
+
+- Affichage du dimanche dans la vue pour la signature électronique
+- Les champs comment dans la table signature passent en text (Anciennement String mais pas assez long)
+
 
 ## [1.0.1] - 21-02-2020
 

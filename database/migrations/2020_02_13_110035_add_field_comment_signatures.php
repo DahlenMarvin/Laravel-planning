@@ -14,7 +14,7 @@ class AddFieldCommentSignatures extends Migration
     public function up()
     {
         Schema::table('signatures', function (Blueprint $table) {
-            $table->string('comment')->after('employee_id')->nullable();
+            $table->text('comment')->after('employee_id')->nullable();
         });
     }
 

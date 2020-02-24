@@ -29,7 +29,7 @@
 
     <div class="container">
 
-        <b>{{$employee->name . " " . $employee->lastname}} | Heure de cette semaine : {{ $total / 60 }}H</b>
+        <b>{{$employee->name . " " . $employee->lastname}} | {{ $employee->user->name }} | Heure de cette semaine : {{ $total / 60 }}H</b>
 
         <table class="table table-bordered">
             <thead>
@@ -150,7 +150,7 @@
                         window.location.href = "http://planning.magasin-leseleveursdelacharentonne.fr/signature/validatePlanning";
                     })
                     .fail(function(data) {
-                        alert(data);
+                        alert("Une erreur est survenue lors de la signature de cette personne. Merci de prendre contact avec Dahlen Marvin pour savoir ce qu'il se passe.");
                     });
             });
 

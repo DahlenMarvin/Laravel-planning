@@ -81,7 +81,7 @@ class SignatureController extends Controller
         $startOfWeek->setISODate($nAnnee,$nSemaine);
         $endOfWeek->setISODate($nAnnee,$nSemaine);
         $startOfWeek = $startOfWeek->startOfWeek();
-        $endOfWeek = $endOfWeek->endOfWeek();
+        $endOfWeek = $endOfWeek->endOfWeek()->addDay();
 
         //On récupère les events de l'employée sur la semaine données en params
         $plannings = Planning::where('employee_id', $employee_id)->where('date', '>=', $startOfWeek)->where('date_end', '<=', $endOfWeek)->get();
@@ -135,10 +135,23 @@ class SignatureController extends Controller
         $signature = Signature::where('employee_id', $employee->id)->where('nSemaine', $request->get('nSemaine'))->where('nAnnee', $request->get('nAnnee'))->first();
 
 
+        $total = 0;
+        $array = [];
+        $plannings = Planning::where('employee_id', $employee->id)->where('date','>=',$startOfWeek)->where('date_end','<=',$endOfWeek)->orderBy('date', 'ASC')->get();
+        foreach ($plannings as $planning) {
+            $diff = Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date));
+            if(array_key_exists(substr($planning->date, 0, 10), $array)) {
+                $total = $array[substr($planning->date, 0, 10)] + $diff;
+                $array[substr($planning->date, 0, 10)] = $total;
+            } else  {
+                $array[substr($planning->date, 0, 10)] = $diff;
+            }
+        }
+
         if($plannings->count() == 0 || $signature->count() == 0) {
             return Redirect::route("signature.showWeek")->withFail("Pas encore de planning pour cette période !");
         }
-        return view('signature.showWeekValidate', compact('plannings', 'signature', 'employee'));
+        return view('signature.showWeekValidate', compact('plannings', 'signature', 'employee', 'array'));
     }
 
     public function updateName(Request $request) {

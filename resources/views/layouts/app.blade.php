@@ -87,6 +87,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('signature.showWeek') }}"><i class="fas fa-signature"></i> Sortir une signature</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.showFormChoosePlanning') }}"><i class="fas fa-users-cog"></i> Les plannings</a>
+                                </li>
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{ Auth::user()->name }} <span class="caret"></span>

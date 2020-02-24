@@ -251,7 +251,7 @@ class PlanningController extends Controller
         $dateStart->setISODate($request->get('year'),$request->get('weekNumber'))->startOfWeek();
         $dateEnd->setISODate($request->get('year'),$request->get('weekNumber'))->endOfWeek()->addDay();
         foreach ($employees as $employee) {
-            $total = 0;
+                $total = 0;
             $plannings = Planning::where('employee_id', $employee->id)->where('date','>=',$dateStart)->where('date_end','<=',$dateEnd)->orderBy('date', 'ASC')->get();
             foreach ($plannings as $planning) {
                 $diff = Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date));

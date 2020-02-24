@@ -20,13 +20,13 @@
             <div class="form-group row">
                 <label for="date" class="col-sm-2 col-form-label">Date début</label>
                 <div class="col-sm-10">
-                    <input type="datetime-local" class="date form-control" id="date" name="date" value="{{ $planning->date }}">
+                    <input type="datetime-local" class="date form-control" id="date" name="date" value="{{ \Carbon\Carbon::parse($planning->date)->format('Y-m-d\\TH:i') }}">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="date_end" class="col-sm-2 col-form-label">Date fin</label>
                 <div class="col-sm-10">
-                    <input type="datetime-local" class="date form-control" id="date_end" name="date_end" value="{{ $planning->date_end }}">
+                    <input type="datetime-local" class="date form-control" id="date_end" name="date_end" value="{{ \Carbon\Carbon::parse($planning->date_end)->format('Y-m-d\\TH:i') }}">
                 </div>
             </div>
             <div class="form-group row">

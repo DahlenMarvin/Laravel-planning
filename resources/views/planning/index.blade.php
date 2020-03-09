@@ -219,7 +219,7 @@
                                 data: {
                                     magasin_id: {{ \Illuminate\Support\Facades\Auth::user()->id }},
                                     year: dateString.substring(dateString.length - 4),
-                                    weekNumber: weekNumberString.substring(weekNumberString.length - 1)
+                                    weekNumber: weekNumberString.substring(weekNumberString.length - 2)
                                 },
                                 dataType: 'html',
                             })

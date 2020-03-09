@@ -93,11 +93,11 @@ class SignatureController extends Controller
         $endOfWeek = Carbon::now();
         $startOfWeek->setISODate($nAnnee,$nSemaine);
         $endOfWeek->setISODate($nAnnee,$nSemaine);
-        $startOfWeek = $startOfWeek->startOfWeek();
-        $endOfWeek = $endOfWeek->endOfWeek()->addDay();
+        $startOfWeek = $startOfWeek->startOfWeek()->format('Y-m-d');
+        $endOfWeek = $endOfWeek->endOfWeek()->addDay()->format('Y-m-d');
         $signature = Signature::where('employee_id', $employee_id)->where('nSemaine', $nSemaine)->where('nAnnee', $nAnnee)->first();
         //On récupère les events de l'employée sur la semaine données en params
-        $plannings = Planning::where('employee_id', $employee_id)->where('date', '>=', $startOfWeek)->where('date_end', '<=', $endOfWeek)->orderBy('date', 'ASC')->get();
+        $plannings = Planning::where('employee_id', $employee_id)->where('date', '>=', $startOfWeek)->where('date_end', '<', $endOfWeek)->orderBy('date', 'ASC')->get();
 
         //Calcul des heures de la semaine
         $total = 0;

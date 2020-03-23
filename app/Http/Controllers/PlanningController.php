@@ -286,4 +286,75 @@ class PlanningController extends Controller
         return $html;
     }
 
+    public function addCP(Request $request) {
+
+        switch ($request->get('typeContrat')) {
+            case 26:
+                $planning = new Planning();
+                $planning->date = $request->get('dateCP') . 'T08:00';
+                $planning->date_end = $request->get('dateCP') . 'T13:12';
+                $planning->employee()->associate($request->get('employee_id'));
+                $planning->isCP = 1;
+                $planning->save();
+                break;
+
+            case 28:
+                $planning = new Planning();
+                $planning->date = $request->get('dateCP') . 'T08:00';
+                $planning->date_end = $request->get('dateCP') . 'T13:36';
+                $planning->employee()->associate($request->get('employee_id'));
+                $planning->isCP = 1;
+                $planning->save();
+                break;
+
+            case 30:
+                $planning = new Planning();
+                $planning->date = $request->get('dateCP') . 'T08:00';
+                $planning->date_end = $request->get('dateCP') . 'T14:00';
+                $planning->employee()->associate($request->get('employee_id'));
+                $planning->isCP = 1;
+                $planning->save();
+                break;
+
+            case 35:
+                $planning = new Planning();
+                $planning->date = $request->get('dateCP') . 'T08:00';
+                $planning->date_end = $request->get('dateCP') . 'T15:00';
+                $planning->employee()->associate($request->get('employee_id'));
+                $planning->isCP = 1;
+                $planning->save();
+                break;
+
+            case 38:
+                $planning = new Planning();
+                $planning->date = $request->get('dateCP') . 'T08:00';
+                $planning->date_end = $request->get('dateCP') . 'T15:36';
+                $planning->employee()->associate($request->get('employee_id'));
+                $planning->isCP = 1;
+                $planning->save();
+                break;
+
+            case 39:
+                $planning = new Planning();
+                $planning->date = $request->get('dateCP') . 'T08:00';
+                $planning->date_end = $request->get('dateCP') . 'T15:48';
+                $planning->employee()->associate($request->get('employee_id'));
+                $planning->isCP = 1;
+                $planning->save();
+                break;
+
+            case 40:
+                $planning = new Planning();
+                $planning->date = $request->get('dateCP') . 'T08:00';
+                $planning->date_end = $request->get('dateCP') . 'T16:00';
+                $planning->employee()->associate($request->get('employee_id'));
+                $planning->isCP = 1;
+                $planning->save();
+                break;
+
+        }
+
+        return Redirect::to("/planning")->withSuccess('Journée CP ajoutée avec succès');
+    }
+
 }

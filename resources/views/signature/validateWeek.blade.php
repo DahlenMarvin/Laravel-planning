@@ -34,15 +34,31 @@
             <tr style="text-align: center">
                 <th scope="col">Date début</th>
                 <th scope="col">Date fin</th>
+                <th scope="col">Total</th>
             </tr>
             </thead>
             <tbody>
+                <?php $total = 0; ?>
                 @foreach($plannings as $planning)
-                    <tr style="text-align: center">
-                        <td>{{ \Carbon\Carbon::parse($planning->date)->format('d/m/Y H:i:s') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($planning->date_end)->format('d/m/Y H:i:s') }}</td>
-                    </tr>
+                    @if($planning->isCP == 1)
+                        <tr style="text-align: center">
+                            <td colspan="2">CP ==> {{ ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date)->format('Y') }}</td>
+                            <td>{{ (\Carbon\Carbon::parse($planning->date_end)->diffInMinutes(\Carbon\Carbon::parse($planning->date)))/60 }} H</td>
+                            <?php $total = $total + (\Carbon\Carbon::parse($planning->date_end)->diffInMinutes(\Carbon\Carbon::parse($planning->date)))/60; ?>
+                        </tr>
+                    @else
+                        <tr style="text-align: center">
+                            <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date)->format('Y H\hi\m') }}</td>
+                            <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date_end)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date_end)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date_end)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date_end)->format('Y H\hi\m') }}</td>
+                            <td>{{ (\Carbon\Carbon::parse($planning->date_end)->diffInMinutes(\Carbon\Carbon::parse($planning->date)))/60 }} H</td>
+                            <?php $total = $total + (\Carbon\Carbon::parse($planning->date_end)->diffInMinutes(\Carbon\Carbon::parse($planning->date)))/60; ?>
+                        </tr>
+                    @endif
                 @endforeach
+                <tr style="text-align: center">
+                    <td colspan="2" style="font-weight: bold">TOTAL</td>
+                    <td colspan="2">{{ $total }} H</td>
+                </tr>
             </tbody>
         </table>
 

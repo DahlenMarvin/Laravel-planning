@@ -36,17 +36,24 @@
             <tr style="text-align: center">
                 <th scope="col">Date début</th>
                 <th scope="col">Date fin</th>
-                <th scope="col">Saisie / Dernière modification</th>
+                <th scope="col">Date de la saisie</th>
             </tr>
             </thead>
             <tbody>
-                @foreach($plannings as $planning)
+            @foreach($plannings as $planning)
+                @if($planning->isCP == 1)
                     <tr style="text-align: center">
-                        <td>{{ \Carbon\Carbon::parse($planning->date)->format('d/m/Y H:i:s') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($planning->date_end)->format('d/m/Y H:i:s') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($planning->updated_at)->format('d/m/Y H:i:s') }}</td>
+                        <td colspan="2">CP ==> {{ ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date)->format('Y') }}</td>
+                        <td>{{  ucfirst(\Carbon\Carbon::parse($planning->updated_at)->addHour()->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->updated_at)->addHour()->format('d') . ' ' . \Carbon\Carbon::parse($planning->updated_at)->addHour()->localeMonth . ' ' . \Carbon\Carbon::parse($planning->updated_at)->addHour()->format('Y H\hi\m') }}</td>
                     </tr>
-                @endforeach
+                @else
+                    <tr style="text-align: center">
+                        <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date)->format('Y H\hi\m') }}</td>
+                        <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date_end)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date_end)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date_end)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date_end)->format('Y H\hi\m') }}</td>
+                        <td>{{  ucfirst(\Carbon\Carbon::parse($planning->updated_at)->addHour()->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->updated_at)->addHour()->format('d') . ' ' . \Carbon\Carbon::parse($planning->updated_at)->addHour()->localeMonth . ' ' . \Carbon\Carbon::parse($planning->updated_at)->addHour()->format('Y H\hi\m') }}</td>
+                    </tr>
+                @endif
+            @endforeach
             </tbody>
         </table>
 

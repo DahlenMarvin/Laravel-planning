@@ -31,49 +31,6 @@
 
 @section('content')
 
-    <!--
-    <div style="float: left; margin-left: 5%">
-            <table class="table table-bordered" id="TableHours">
-                <thead>
-                <tr>
-                    <th colspan="2">{{ \Carbon\Carbon::now()->format('m / Y') }}</th>
-                </tr>
-                <tr>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Nb heure</th>
-                </tr>
-                </thead>
-                <tbody id="nbHours">
-                @ foreach($arrayhoursPerEmployee as $array)
-                    @ foreach($array as $k => $v)
-                        <tr>
-                            <th>{ { $k }} </th>
-                            <td>{ { $v }} heures</td>
-                        </tr>
-                    @ endforeach
-                @ endforeach
-
-                </tbody>
-            </table>
-        <br><br>
-
-        <div id='external-events'>
-            <p>
-                <strong>Evenement</strong>
-            </p>
-            <label for="employee">Employé</label>
-            <select name="employee_id" id="employee_id" class="form-control">
-                @ foreach($employees as $employe)
-                    <option value="{ { $employe->id }}">{ { $employe->name . ' ' . $employe->lastname }}</option>
-                @ endforeach
-            </select>
-            <div class='fc-event'>Matin</div>
-            <div class='fc-event'>Après-midi</div>
-            <div class='fc-event'>Journée continue</div>
-        </div>
-
-    </div>
-    -->
     <div class="container">
 
         <div id="calendar"></div>
@@ -127,6 +84,61 @@
     </div>
 
     <!-- Modal -->
+    <div class="modal fade" id="modalCP" tabindex="-1" role="dialog" aria-labelledby="modalCP" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ajouter un CP</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('planning.addCP') }}" method="post" id="addCP">
+                        {{ csrf_field() }}
+                        <div class="form-group row">
+                            <label for="employe" class="col-sm-4 col-form-label">Employé</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="employe" name="employee_id">
+                                    @foreach($employees as $employe)
+                                        <option value="{{ $employe->id }}">{{ $employe->name . ' ' . $employe->lastname }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="typeContrat" class="col-sm-4 col-form-label">Type contrat</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="typeContrat" name="typeContrat">
+                                    <option value="26">26 heures</option>
+                                    <option value="28">28 heures</option>
+                                    <option value="30">30 heures</option>
+                                    <option value="35" selected>35 heures</option>
+                                    <option value="38">38 heures</option>
+                                    <option value="39">39 heures</option>
+                                    <option value="40">40 heures</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="dateCP" class="col-sm-4 col-form-label">Date</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="date form-control" id="dateCP" name="dateCP" value="{{ \Carbon\Carbon::now() }}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group row">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button> &nbsp;
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Ajouter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
     <div class="modal fade" id="modalHours" tabindex="-1" role="dialog" aria-labelledby="modalHours"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -157,21 +169,6 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             var calendarEl = document.getElementById('calendar');
-            var montName = document.getElementsByClassName('fc-center');
-            var Draggable = FullCalendarInteraction.Draggable;
-            /*
-            var containerEl = document.getElementById('external-events');
-            new Draggable(containerEl, {
-                itemSelector: '.fc-event',
-                eventData: function(eventEl) {
-                    return {
-                        title: eventEl.innerText,
-                        startTime: '08:30',
-                        duration: "04:00"
-                    };
-                }
-            });
-            */
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: [ 'interaction', 'timeGrid' ],
                 defaultView: 'timeGridWeek',
@@ -197,7 +194,7 @@
                     cp: {
                         text: 'CP',
                         click: function() {
-                            alert('En cours de développement')
+                            $('#modalCP').modal();
                         }
                     },
                     hours: {
@@ -205,7 +202,7 @@
                         click: function() {
 
                             var dateString = $('.fc-center').text();
-                            var weekNumberString = $('.fc-week-number span').text()
+                            var weekNumberString = $('.fc-week-number span').text();
 
                             $.ajaxSetup({
                                 headers: {
@@ -246,21 +243,31 @@
                 firstDay: 1,
                 events : [
                     @foreach($plannings as $planning)
-                    {
-                            title : '{{$planning->employee()->get()[0]->name . ' ' . $planning->employee()->get()[0]->lastname}}',
-                            start : '{{$planning->date}}',
-                            end : '{{$planning->date_end}}',
-                            url : '{{route('planning.show', $planning)}}',
-                            color: '{{ $planning->employee()->get()[0]->color }}',
+                        @if($planning->isCP == 1)
+                            {
+                                title : 'CP - {{$planning->employee()->get()[0]->name . ' ' . $planning->employee()->get()[0]->lastname}}',
+                                start : '{{ \Carbon\Carbon::parse($planning->date)->format('Y-m-d') . 'T08:00' }}',
+                                end : '{{ \Carbon\Carbon::parse($planning->date_end)->format('Y-m-d') . 'T19:30' }}',
+                                url : '{{route('planning.show', $planning)}}',
+                                color: '#BADA55',
 
-                    },
+                            },
+                        @else
+                            {
+                                title : '{{$planning->employee()->get()[0]->name . ' ' . $planning->employee()->get()[0]->lastname}}',
+                                start : '{{$planning->date}}',
+                                end : '{{$planning->date_end}}',
+                                url : '{{route('planning.show', $planning)}}',
+                                color: '{{ $planning->employee()->get()[0]->color }}',
+
+                            },
+                        @endif
                     @endforeach
                 ],
                 dateClick: function(info) {
 
                     var string = info.dateStr;
 
-                    //$('.date').val(aaaa+'-'+mm+'-'+jj+'T'+hour+':'+minut);
                     $('.date').val(string.substring(0,16));
                     $('.date_end').val(string.substring(0,16));
                     $('#basicExampleModal').modal();
@@ -372,23 +379,6 @@
             html = html.concat('</div>');
 
             $('.fc-periode-button').html(html);
-
-            /*$('.fc-button-group').on('click', function() {
-                $.ajax({
-                    method: 'GET',
-                    url: '{{ route('planning.updateHours') }}',
-                    data: {
-                        month: $('.fc-center').text()
-                    },
-                    dataType: 'html',
-                })
-                .done(function(data) {
-                    $('#TableHours').html(data);
-                })
-                .fail(function(data) {
-                    $('#TableHours').html(data);
-                });
-            });*/
 
             $('#submit').click(function() {
                 var form = $('#addEmployee');

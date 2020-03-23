@@ -19,7 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
 Route::get('updateHours', 'PlanningController@updateHours')->name('planning.updateHours');
 Route::post('addEvent', 'PlanningController@addEvent')->name('planning.addEvent');
 Route::get('planning/duplicate/{weekNumber}/{year}/{idPlanning}/{weekToDuplicate}', 'PlanningController@duplicate')->name('planning.duplicate');
@@ -50,5 +49,6 @@ Route::group(['middleware' => 'auth'], function (){
     Route::resource('employee', 'EmployeeController');
     Route::get('employee/updatePassword/{employee}', 'EmployeeController@updatePassword')->name('employee.updatePassword');
     Route::resource('planning', 'PlanningController');
+    Route::post('planning/addCP', 'PlanningController@addCP')->name('planning.addCP');
 });
 

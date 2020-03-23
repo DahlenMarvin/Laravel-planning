@@ -357,4 +357,14 @@ class PlanningController extends Controller
         return Redirect::to("/planning")->withSuccess('Journée CP ajoutée avec succès');
     }
 
+    public function addRecup(Request $request) {
+        $planning = new Planning();
+        $planning->date = $request->get('dateRecup');
+        $planning->date_end = $request->get('date_end_Recup');
+        $planning->employee()->associate($request->get('employee_id'));
+        $planning->isCP = 0;
+        $planning->isRecup = 1;
+        $planning->save();
+    }
+
 }

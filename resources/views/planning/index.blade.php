@@ -99,7 +99,7 @@
                         <div class="form-group row">
                             <label for="employe" class="col-sm-4 col-form-label">Employé</label>
                             <div class="col-sm-8">
-                                <select class="form-control" id="employe" name="employee_id">
+                                <select class="form-control" id="employee_cp" name="employee_id">
                                     @foreach($employees as $employe)
                                         <option value="{{ $employe->id }}">{{ $employe->name . ' ' . $employe->lastname }}</option>
                                     @endforeach
@@ -123,7 +123,54 @@
                         <div class="form-group row">
                             <label for="dateCP" class="col-sm-4 col-form-label">Date</label>
                             <div class="col-sm-8">
-                                <input type="date" class="date form-control" id="dateCP" name="dateCP" value="{{ \Carbon\Carbon::now() }}">
+                                <input type="date" class="date form-control" id="dateCP" name="dateCP" value="{{ \Carbon\Carbon::now()->format('Y-m-d H:i') }}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group row">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button> &nbsp;
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Ajouter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalRecup" tabindex="-1" role="dialog" aria-labelledby="modalRecup" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ajouter une récup</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('planning.addRecup') }}" method="post" id="addRecup">
+                        {{ csrf_field() }}
+                        <div class="form-group row">
+                            <label for="employe" class="col-sm-4 col-form-label">Employé</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="employee_recup" name="employee_id">
+                                    @foreach($employees as $employe)
+                                        <option value="{{ $employe->id }}">{{ $employe->name . ' ' . $employe->lastname }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="date" class="col-sm-4 col-form-label">Date début</label>
+                            <div class="col-sm-8">
+                                <input type="datetime-local" class="date form-control" id="dateRecup" name="dateRecup">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="date_end" class="col-sm-4 col-form-label">Date fin</label>
+                            <div class="col-sm-8">
+                                <input type="datetime-local" class="date_end form-control" id="date_end_Recup" name="date_end_Recup">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -197,6 +244,12 @@
                             $('#modalCP').modal();
                         }
                     },
+                    recup: {
+                        text: 'Récup',
+                        click: function() {
+                            $('#modalRecup').modal();
+                        }
+                    },
                     hours: {
                         text: 'Vos heures',
                         click: function() {
@@ -232,7 +285,7 @@
                     }
                 },
                 header: {
-                    left: 'prev,next hours cp',
+                    left: 'prev,next hours cp recup',
                     center: 'title',
                     right: 'periode duplicate'
                 },
@@ -243,13 +296,22 @@
                 firstDay: 1,
                 events : [
                     @foreach($plannings as $planning)
-                        @if($planning->isCP == 1)
+                        @if($planning->isCP == 1 && $planning->isRecup == 0)
                             {
                                 title : 'CP - {{$planning->employee()->get()[0]->name . ' ' . $planning->employee()->get()[0]->lastname}}',
                                 start : '{{ \Carbon\Carbon::parse($planning->date)->format('Y-m-d') . 'T08:00' }}',
                                 end : '{{ \Carbon\Carbon::parse($planning->date_end)->format('Y-m-d') . 'T19:30' }}',
                                 url : '{{route('planning.show', $planning)}}',
                                 color: '#BADA55',
+
+                            },
+                        @elseif($planning->isCP == 0 && $planning->isRecup == 1)
+                            {
+                                title : 'Recup - {{$planning->employee()->get()[0]->name . ' ' . $planning->employee()->get()[0]->lastname}}',
+                                start : '{{$planning->date}}',
+                                end : '{{$planning->date_end}}',
+                                url : '{{route('planning.show', $planning)}}',
+                                color: '#edb844',
 
                             },
                         @else
@@ -378,6 +440,9 @@
             }
             html = html.concat('</div>');
 
+            var datetime = moment().add(0, "w").startOf('isoWeek').format('YYYY-MM-D');
+            $('.date').val(datetime + 'T08:00');
+            $('.date_end').val(datetime + 'T12:30');
             $('.fc-periode-button').html(html);
 
             $('#submit').click(function() {

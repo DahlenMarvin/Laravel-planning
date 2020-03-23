@@ -40,6 +40,14 @@ A venir
 
 Evolution de l'application par date 
 
+## [1.0.3] - 23-03-2020
+
+### Ajouter 
+
+- Ajout de l'option CP sur un planning
+- Ajout de l'option Récup sur un planning
+
+
 ## [1.0.2] - 24-02-2020
 
 ### Ajouter 

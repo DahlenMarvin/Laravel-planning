@@ -38,20 +38,26 @@
             </tr>
             </thead>
             <tbody>
-                <?php $total = 0; ?>
+                <?php use Carbon\Carbon;$total = 0; ?>
                 @foreach($plannings as $planning)
-                    @if($planning->isCP == 1)
+                    @if($planning->isCP == 1 && $planning->isRecup == 0)
                         <tr style="text-align: center">
                             <td colspan="2">CP ==> {{ ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date)->format('Y') }}</td>
                             <td>{{ (\Carbon\Carbon::parse($planning->date_end)->diffInMinutes(\Carbon\Carbon::parse($planning->date)))/60 }} H</td>
-                            <?php $total = $total + (\Carbon\Carbon::parse($planning->date_end)->diffInMinutes(\Carbon\Carbon::parse($planning->date)))/60; ?>
+                            <?php $total = $total + (Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date)))/60; ?>
+                        </tr>
+                    @elseif($planning->isCP == 0 && $planning->isRecup == 1)
+                        <tr style="text-align: center">
+                            <td colspan="2">Recup ==> {{ ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date)->format('Y') }}</td>
+                            <td>{{ (\Carbon\Carbon::parse($planning->date_end)->diffInMinutes(\Carbon\Carbon::parse($planning->date)))/60 }} H</td>
+                            <?php $total = $total + (Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date)))/60; ?>
                         </tr>
                     @else
                         <tr style="text-align: center">
                             <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date)->format('Y H\hi\m') }}</td>
                             <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date_end)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date_end)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date_end)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date_end)->format('Y H\hi\m') }}</td>
                             <td>{{ (\Carbon\Carbon::parse($planning->date_end)->diffInMinutes(\Carbon\Carbon::parse($planning->date)))/60 }} H</td>
-                            <?php $total = $total + (\Carbon\Carbon::parse($planning->date_end)->diffInMinutes(\Carbon\Carbon::parse($planning->date)))/60; ?>
+                            <?php $total = $total + (Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date)))/60; ?>
                         </tr>
                     @endif
                 @endforeach

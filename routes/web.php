@@ -50,5 +50,6 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('employee/updatePassword/{employee}', 'EmployeeController@updatePassword')->name('employee.updatePassword');
     Route::resource('planning', 'PlanningController');
     Route::post('planning/addCP', 'PlanningController@addCP')->name('planning.addCP');
+    Route::post('planning/addRecup', 'PlanningController@addRecup')->name('planning.addRecup');
 });
 

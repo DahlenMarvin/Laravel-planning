@@ -12,7 +12,7 @@ class Planning extends Model
      * @var array
      */
     protected $fillable = [
-        'employee_id', 'date'
+        'employee_id', 'date', 'date_end', 'isCP', 'isRecup'
     ];
 
     /**

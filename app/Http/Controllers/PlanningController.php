@@ -199,7 +199,7 @@ class PlanningController extends Controller
     public function duplicate($weeknumber, $title, $idMagasin, $weekToDuplicate) {
 
         //On reformate correctement les variables
-        $weekNumber = substr($weeknumber, -1);
+        $weekNumber = substr($weeknumber, -2);
         $year = substr($title, -4);
         $weekPaste = explode('-',$weekToDuplicate);
         $events = [];

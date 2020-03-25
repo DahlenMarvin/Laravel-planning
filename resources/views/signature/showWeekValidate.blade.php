@@ -22,8 +22,8 @@
             <tbody>
             @foreach($plannings as $planning)
                 <tr style="text-align: center">
-                    <td>{{ \Carbon\Carbon::parse($planning->date)->format('d/m/Y H:i:s') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($planning->date_end)->format('d/m/Y H:i:s') }}</td>
+                    <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date)->format('Y H\hi\m') }}</td>
+                    <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date_end)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date_end)->format('d') . ' ' . \Carbon\Carbon::parse($planning->date_end)->localeMonth . ' ' . \Carbon\Carbon::parse($planning->date_end)->format('Y H\hi\m') }}</td>
                 </tr>
             @endforeach
             </tbody>
@@ -43,15 +43,15 @@
                     <?php $total=0 ?>
                     @foreach($array as $jour => $nbHeure)
                         <tr>
-                            <td>{{ \Carbon\Carbon::parse($jour)->format('l j F Y') }}</td>
-                            <td>{{$nbHeure/60}}H</td>
+                            <td>{{  ucfirst(\Carbon\Carbon::parse($jour)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($jour)->format('d') . ' ' . \Carbon\Carbon::parse($jour)->localeMonth . ' ' . \Carbon\Carbon::parse($jour)->format('Y') }}</td>
+                            <td>{{$nbHeure/60}} H</td>
                             @php
                               $total=$total+($nbHeure/60)
                             @endphp
                         </tr>
                     @endforeach
                     <tr>
-                        <td colspan="2">TOTAL SEMAINE : <b>{{ $total }}</b></td>
+                        <td colspan="2">TOTAL SEMAINE : <b>{{ $total }} H</b></td>
                     </tr>
                     </tbody>
                 </table>

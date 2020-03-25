@@ -128,16 +128,15 @@ class SignatureController extends Controller
         $startOfWeek->setISODate($request->get('nAnnee'),$request->get('nSemaine'));
         $endOfWeek->setISODate($request->get('nAnnee'),$request->get('nSemaine'));
         $startOfWeek = $startOfWeek->startOfWeek();
-        $endOfWeek = $endOfWeek->endOfWeek();
+        $endOfWeek = $endOfWeek->endOfWeek()->addDay();
 
         //On récupère les events de l'employée sur la semaine données en params
-        $plannings = Planning::where('employee_id', $employee->id)->where('date', '>=', $startOfWeek)->where('date_end', '<=', $endOfWeek)->get();
         $signature = Signature::where('employee_id', $employee->id)->where('nSemaine', $request->get('nSemaine'))->where('nAnnee', $request->get('nAnnee'))->first();
 
 
         $total = 0;
         $array = [];
-        $plannings = Planning::where('employee_id', $employee->id)->where('date','>=',$startOfWeek)->where('date_end','<=',$endOfWeek)->orderBy('date', 'ASC')->get();
+        $plannings = Planning::where('employee_id', $employee->id)->where('date','>=',$startOfWeek)->where('date_end','<',$endOfWeek)->orderBy('date', 'ASC')->get();
         foreach ($plannings as $planning) {
             $diff = Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date));
             if(array_key_exists(substr($planning->date, 0, 10), $array)) {

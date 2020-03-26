@@ -11,7 +11,6 @@
 @section('content')
     <div class="container">
         <h2 style="text-align: center">Semaine n°{{$signature->nSemaine}} | Année {{$signature->nAnnee}} | Employé : {{ $employee->name . " " . $employee->lastname }}</h2>
-    <div class="container">
         <table class="table table-bordered">
             <thead>
             <tr style="text-align: center">
@@ -93,6 +92,7 @@
                 Cette semaine n'est pas encore validée pour le moment
             </p>
         @endif
+    </div>
 @endsection
 
 @section('js')

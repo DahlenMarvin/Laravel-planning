@@ -167,4 +167,41 @@ class SignatureController extends Controller
 
     }
 
+    public function formForMass() {
+        return view('signature.formForMass');
+    }
+
+    public function exportMass(Request $request) {
+        $employees = Employee::all();
+        $arrayFormat = [];
+        $i = 0;
+        $startOfWeek = Carbon::now();
+        $endOfWeek = Carbon::now();
+        $startOfWeek->setISODate($request->get('nAnnee'),$request->get('nSemaine'))->startOfWeek();
+        $endOfWeek->setISODate($request->get('nAnnee'),$request->get('nSemaine'))->endOfWeek();
+        foreach ($employees as $employee) {
+            // On récupère sa signature pour la semaine et l'année en paramètre
+            $signature = Signature::where('employee_id', $employee->id)->where('nSemaine', $request->get('nSemaine'))->where('nAnnee', $request->get('nAnnee'))->first();
+            if($signature) {
+                $arrayDifference = [];
+                // On récupère ses plannings
+                $plannings = Planning::where('employee_id', $employee->id)->where('date','>=',$startOfWeek)->where('date_end','<',$endOfWeek)->orderBy('date', 'ASC')->get();
+                // On effectue le calcul des heures par jour
+                foreach ($plannings as $planning) {
+                    $diff = Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date));
+                    if (array_key_exists(substr($planning->date, 0, 10), $arrayDifference)) {
+                        $total = $arrayDifference[substr($planning->date, 0, 10)] + $diff;
+                        $arrayDifference[substr($planning->date, 0, 10)] = $total;
+                    } else {
+                        $arrayDifference[substr($planning->date, 0, 10)] = $diff;
+                    }
+                }
+                $arrayFormat[$i] = [$signature, $plannings, $arrayDifference, $employee];
+                $i++;
+            }
+        }
+        return view('signature.exportMass', compact('arrayFormat'));
+
+    }
+
 }

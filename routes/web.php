@@ -33,6 +33,8 @@ Route::get('signature/validateWeekForAdmin/{employee_id}/{nSemaine}/{nAnnee}', '
 Route::get('signature/validatePlanning', 'SignatureController@validatePlanning')->name('signature.validatePlanning');
 Route::post('signature/showWeekValidate', 'SignatureController@showWeekValidate')->name('signature.showWeekValidate');
 Route::get('signature/showWeek', 'SignatureController@showWeek')->name('signature.showWeek');
+Route::get('signature/formForMass', 'SignatureController@formForMass')->name('signature.formForMass');
+Route::post('signature/exportMass', 'SignatureController@exportMass')->name('signature.exportMass');
 Route::post('signature/updateName', 'SignatureController@updateName')->name('signature.updateName');
 
 Route::get('employee/profil/{employee}', 'EmployeeController@profil')->name('employee.profil');

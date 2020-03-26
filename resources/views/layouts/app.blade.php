@@ -84,8 +84,23 @@
                                     </div>
                                 </li>
                             @elseif(\Illuminate\Support\Facades\Auth::user()->type == "Comptable")
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('signature.showWeek') }}"><i class="fas fa-signature"></i> Sortir une signature</a>
+                                <li class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                                       aria-expanded="false">
+                                        <i class="fa fa-signature" aria-hidden="true"></i> Signature <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <li>
+                                            <a href="{{ route('signature.showWeek') }}" class="nav-link">
+                                                <i class="fas fa-user" aria-hidden="true"></i> Unique
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('signature.formForMass') }}" class="nav-link">
+                                                <i class="fa fa-users" aria-hidden="true"></i> Masse
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.showFormChoosePlanning') }}"><i class="fas fa-users-cog"></i> Les plannings</a>

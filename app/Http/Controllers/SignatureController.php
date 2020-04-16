@@ -160,7 +160,7 @@ class SignatureController extends Controller
         $return .= '</tr>';
         foreach ($employees as $employee) {
             $return .= '<tr>';
-            $return .= "<td style=\"cursor: pointer\" onclick=\"const str = this.innerText; let name = str.substring(0, str.length - 3); let id = str.substring(str.length -2, str.length) ; document.getElementById('employee_id').innerHTML = '<option value=\'' + id + '\'>' + name + '</option>'; $('.tableUsername').hide();\">" . $employee->name . " " . $employee->lastname . " " . $employee->id . "</td>";
+            $return .= "<td style=\"cursor: pointer\" onclick=\"const str = this.innerText; const params = str.split('|') ; document.getElementById('employee_id').innerHTML = '<option value=\'' + params[1].trim() + '\'>' + params[0].trim() + '</option>'; $('.tableUsername').hide();\">" . $employee->name . " " . $employee->lastname . " | " . $employee->id . "</td>";
             $return .= '</tr>';
         }
         return $return;

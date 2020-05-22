@@ -178,14 +178,14 @@ class SignatureController extends Controller
         $startOfWeek = Carbon::now();
         $endOfWeek = Carbon::now();
         $startOfWeek->setISODate($request->get('nAnnee'),$request->get('nSemaine'))->startOfWeek();
-        $endOfWeek->setISODate($request->get('nAnnee'),$request->get('nSemaine'))->endOfWeek();
+        $endOfWeek->setISODate($request->get('nAnnee'),$request->get('nSemaine'))->endOfWeek()->addDay();
         foreach ($employees as $employee) {
             // On récupère sa signature pour la semaine et l'année en paramètre
             $signature = Signature::where('employee_id', $employee->id)->where('nSemaine', $request->get('nSemaine'))->where('nAnnee', $request->get('nAnnee'))->first();
             if($signature) {
                 $arrayDifference = [];
                 // On récupère ses plannings
-                $plannings = Planning::where('employee_id', $employee->id)->where('date','>=',$startOfWeek)->where('date_end','<',$endOfWeek)->orderBy('date', 'ASC')->get();
+                $plannings = Planning::where('employee_id', $employee->id)->where('date','>=',$startOfWeek)->where('date_end','<=',$endOfWeek)->orderBy('date', 'ASC')->get();
                 // On effectue le calcul des heures par jour
                 foreach ($plannings as $planning) {
                     $diff = Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date));

@@ -124,6 +124,9 @@
                                 </li>
                             @elseif(\Illuminate\Support\Facades\Auth::user()->type == "Admin")
                                 <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('employee.create') }}"><i class="fas fa-plus-circle"></i> Créer un employé</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('signature.validatePlanning') }}"><i class="fas fa-signature"></i> Validation des plannings</a>
                                 </li>
                                 <li class="nav-item">

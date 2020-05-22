@@ -4,9 +4,11 @@
 
     <div class="container">
 
+        <!--
         <div id="employeAdd">
-            <a href="{{route('employee.create')}}" class="btn btn-success"><i class="fas fa-plus-square"></i> Ajouter un employé</a>
+            <a href="{ {route('employee.create')}}" class="btn btn-success"><i class="fas fa-plus-square"></i> Ajouter un employé</a>
         </div>
+        -->
         <br>
         <div id="showTableEmployees">
             @if(!empty($employees))
@@ -36,7 +38,7 @@
                                 @else
                                     <a class="btn btn-primary" href="{{ route('employee.desactivate', $employee) }}"><i class="fas fa-times-circle"> Désactiver</i> </a>
                                 @endif
-                                <a class="btn btn-warning" href="{{ route('employee.updatePassword', $employee) }}"><i class="fas fa-redo-alt"> Générer nouveau mot de passe</i> </a>
+                                <!--<a class="btn btn-warning" href="{{ route('employee.updatePassword', $employee) }}"><i class="fas fa-redo-alt"> Générer nouveau mot de passe</i> </a>-->
                                 <!--<a class="btn btn-success" href="{ { route('employee.profil', $employee) }}" style="margin-left: 10px"><i class="fas fa-user"> Profil</i> </a>-->
                             </td>
                         </tr>

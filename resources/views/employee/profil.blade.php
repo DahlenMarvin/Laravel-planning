@@ -79,10 +79,12 @@
                                             <a class="btn btn-primary" href="{{ route('employee.desactivate', $employee) }}"><i class="fas fa-times"> Désactiver</i> </a>
                                         @endif
                                     </div>
+                                    <!--
                                     <div class="form-group">
-                                        <p class="text-muted">Si {{ $employee->name . ' ' . $employee->lastname }} ne se souvient plus de son mot de passe, vous pouvez en générer un nouveau en cliquant sur le lien ci-dessous.</p>
-                                        <a class="btn btn-warning" href="{{ route('employee.updatePassword', $employee) }}"><i class="fas fa-redo-alt"> Générer nouveau mot de passe</i> </a>
+                                        <p class="text-muted">Si { { $employee->name . ' ' . $employee->lastname }} ne se souvient plus de son mot de passe, vous pouvez en générer un nouveau en cliquant sur le lien ci-dessous.</p>
+                                        <a class="btn btn-warning" href="{ { route('employee.updatePassword', $employee) }}"><i class="fas fa-redo-alt"> Générer nouveau mot de passe</i> </a>
                                     </div>
+                                    -->
                                 </form>
                                 <form action="{{ route('employee.update', $employee->id) }}" method="post">
                                     @method('PUT')

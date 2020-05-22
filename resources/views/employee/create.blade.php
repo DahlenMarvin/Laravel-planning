@@ -19,6 +19,22 @@
                 </div>
             </div>
             <div class="form-group row">
+                <label for="birthday" class="col-sm-2 col-form-label">Date de naissance (JJMM)</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="birthday" name="birthday" placeholder="2702">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="magasin" class="col-sm-2 col-form-label">Magasin</label>
+                <div class="col-sm-10">
+                    <select name="magasin" id="magasin" class="form-control">
+                        @foreach($magasins as $magasin)
+                            <option value="{{$magasin->id}}">{{$magasin->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
                 <div class="col-sm-10">
                     <button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Ajouter</button>
                 </div>

@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Psy\Command\Command;
@@ -23,7 +24,12 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::where('user_id', '=', Auth::user()->id)->get();;
+        if(Auth::user()->type == 'Admin') {
+            $employees = Employee::all();
+
+        } else {
+            $employees = Employee::where('user_id', '=', Auth::user()->id)->get();
+        }
         return view('employee.index', compact('employees'));
     }
 
@@ -34,7 +40,8 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('employee.create');
+        $magasins = User::where('type', 'Magasin')->get();
+        return view('employee.create', compact('magasins'));
     }
 
     /**
@@ -45,12 +52,23 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+        if(strstr($request->get('name'), ' ')) {
+            if(strstr($request->get('lastname'), ' ')) {
+                return Redirect::to("/employee")->withFail("Le nom / prénom contiennent un espace");
+            } else {
+                $password = ucfirst($request->get('lastname')) . $request->get('birthday');
+            }
+        } else {
+            $password = ucfirst($request->get('name')) . $request->get('birthday');
+        }
+
         try {
 
             $employe = new Employee();
             $employe->name = $request->get('name');
             $employe->lastname = $request->get('lastname');
-            $employe->user()->associate(Auth::user());
+            $employe->password = Hash::make($password);
+            $employe->user()->associate($request->get('magasin'));
             $employe->save();
 
             return Redirect::to("/employee")->withSuccess('Employé créé');

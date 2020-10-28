@@ -65,8 +65,8 @@ class PlanningController extends Controller
     public function store(Request $request)
     {
         $planning = new Planning();
-        $planning->date = $request->get('date');
-        $planning->date_end = $request->get('date_end');
+        $planning->date = str_replace(" ", "T", $request->get('date'));
+        $planning->date_end = str_replace(" ", "T", $request->get('date_end'));
         $planning->employee()->associate($request->get('employee_id'));
         $planning->save();
         return 0;
@@ -242,7 +242,7 @@ class PlanningController extends Controller
     }
 
     public function getHoursEmployees(Request $request) {
-        $employees = Employee::where('user_id', $request->get('magasin_id'))->get();
+        $employees = Employee::where('user_id', $request->get('magasin_id'))->where('state', 1)->get();
         $array = [];
         $arrayEmployees = [];
         $html = '';

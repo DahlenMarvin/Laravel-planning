@@ -27,21 +27,23 @@
                 </thead>
                 <tbody>
                     @foreach($employees as $employee)
-                        <tr>
-                            <th>{{$employee->name}}</th>
-                            <td>{{$employee->lastname}}</td>
-                            <td>{{ $employee->state == 0 ? 'Inactif' : 'Actif'  }}</td>
-                            <td>
-                                <a class="btn btn-success" href="{{ route('employee.profil', $employee) }}"><i class="fas fa-user-cog"> Profil</i> </a>
-                                @if($employee->state == 0)
-                                    <a class="btn btn-primary" href="{{ route('employee.activate', $employee) }}"><i class="fab fa-vuejs"> Activer</i> </a>
-                                @else
-                                    <a class="btn btn-primary" href="{{ route('employee.desactivate', $employee) }}"><i class="fas fa-times-circle"> Désactiver</i> </a>
+                        @if($employee->state != 0)
+                            <tr>
+                                <th>{{$employee->name}}</th>
+                                <td>{{$employee->lastname}}</td>
+                                <td>{{ $employee->state == 0 ? 'Inactif' : 'Actif'  }}</td>
+                                <td>
+                                    <a class="btn btn-success" href="{{ route('employee.profil', $employee) }}"><i class="fas fa-user-cog"> Profil</i> </a>
+                                    @if($employee->state == 0)
+                                        <a class="btn btn-primary" href="{{ route('employee.activate', $employee) }}"><i class="fab fa-vuejs"> Activer</i> </a>
+                                    @else
+                                        <a class="btn btn-primary" href="{{ route('employee.desactivate', $employee) }}"><i class="fas fa-times-circle"> Désactiver</i> </a>
                                 @endif
                                 <!--<a class="btn btn-warning" href="{{ route('employee.updatePassword', $employee) }}"><i class="fas fa-redo-alt"> Générer nouveau mot de passe</i> </a>-->
-                                <!--<a class="btn btn-success" href="{ { route('employee.profil', $employee) }}" style="margin-left: 10px"><i class="fas fa-user"> Profil</i> </a>-->
-                            </td>
-                        </tr>
+                                    <!--<a class="btn btn-success" href="{ { route('employee.profil', $employee) }}" style="margin-left: 10px"><i class="fas fa-user"> Profil</i> </a>-->
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>

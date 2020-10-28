@@ -172,7 +172,7 @@ class SignatureController extends Controller
     }
 
     public function exportMass(Request $request) {
-        $employees = Employee::all();
+        $employees = Employee::orderBy('name', 'ASC')->get();
         $arrayFormat = [];
         $i = 0;
         $startOfWeek = Carbon::now();

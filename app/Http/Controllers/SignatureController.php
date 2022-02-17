@@ -138,12 +138,14 @@ class SignatureController extends Controller
         $array = [];
         $plannings = Planning::where('employee_id', $employee->id)->where('date','>=',$startOfWeek)->where('date_end','<',$endOfWeek)->orderBy('date', 'ASC')->get();
         foreach ($plannings as $planning) {
-            $diff = Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date));
-            if(array_key_exists(substr($planning->date, 0, 10), $array)) {
-                $total = $array[substr($planning->date, 0, 10)] + $diff;
-                $array[substr($planning->date, 0, 10)] = $total;
-            } else  {
-                $array[substr($planning->date, 0, 10)] = $diff;
+            if($planning->isCP !== 1 && $planning->isRecup !== 1) {
+                $diff = Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date));
+                if(array_key_exists(substr($planning->date, 0, 10), $array)) {
+                    $total = $array[substr($planning->date, 0, 10)] + $diff;
+                    $array[substr($planning->date, 0, 10)] = $total;
+                } else  {
+                    $array[substr($planning->date, 0, 10)] = $diff;
+                }
             }
         }
 
@@ -188,12 +190,14 @@ class SignatureController extends Controller
                 $plannings = Planning::where('employee_id', $employee->id)->where('date','>=',$startOfWeek)->where('date_end','<=',$endOfWeek)->orderBy('date', 'ASC')->get();
                 // On effectue le calcul des heures par jour
                 foreach ($plannings as $planning) {
-                    $diff = Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date));
-                    if (array_key_exists(substr($planning->date, 0, 10), $arrayDifference)) {
-                        $total = $arrayDifference[substr($planning->date, 0, 10)] + $diff;
-                        $arrayDifference[substr($planning->date, 0, 10)] = $total;
-                    } else {
-                        $arrayDifference[substr($planning->date, 0, 10)] = $diff;
+                    if($planning->isCP !== 1 && $planning->isRecup !== 1) {
+                        $diff = Carbon::parse($planning->date_end)->diffInMinutes(Carbon::parse($planning->date));
+                        if (array_key_exists(substr($planning->date, 0, 10), $arrayDifference)) {
+                            $total = $arrayDifference[substr($planning->date, 0, 10)] + $diff;
+                            $arrayDifference[substr($planning->date, 0, 10)] = $total;
+                        } else {
+                            $arrayDifference[substr($planning->date, 0, 10)] = $diff;
+                        }
                     }
                 }
                 $arrayFormat[$i] = [$signature, $plannings, $arrayDifference, $employee];

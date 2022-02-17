@@ -40,6 +40,8 @@ Route::post('signature/updateName', 'SignatureController@updateName')->name('sig
 Route::get('employee/profil/{employee}', 'EmployeeController@profil')->name('employee.profil');
 Route::get('employee/desactivate/{employee}', 'EmployeeController@desactivate')->name('employee.desactivate');
 Route::get('employee/activate/{employee}', 'EmployeeController@activate')->name('employee.activate');
+Route::get('employee/ask/{employee}', 'EmployeeController@ask')->name('employee.ask');
+Route::post('employee/ask/{employee}', 'EmployeeController@storeAsk')->name('employee.storeAsk');
 
 // Gestion des routes admin
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function (){

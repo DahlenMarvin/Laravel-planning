@@ -365,6 +365,8 @@ class PlanningController extends Controller
         $planning->isCP = 0;
         $planning->isRecup = 1;
         $planning->save();
+        return Redirect::to("/planning")->withSuccess('Journée RECUP ajoutée avec succès');
     }
 
 }
+	

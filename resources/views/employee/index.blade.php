@@ -38,8 +38,9 @@
                                         <a class="btn btn-primary" href="{{ route('employee.activate', $employee) }}"><i class="fab fa-vuejs"> Activer</i> </a>
                                     @else
                                         <a class="btn btn-primary" href="{{ route('employee.desactivate', $employee) }}"><i class="fas fa-times-circle"> Désactiver</i> </a>
-                                @endif
-                                <!--<a class="btn btn-warning" href="{{ route('employee.updatePassword', $employee) }}"><i class="fas fa-redo-alt"> Générer nouveau mot de passe</i> </a>-->
+                                    @endif
+                                    <a class="btn btn-success" href="{{ route('employee.ask', $employee) }}"><i class="far fa-calendar-plus"> Demande de congés / recupération</i> </a>
+                                    <!--<a class="btn btn-warning" href="{{ route('employee.updatePassword', $employee) }}"><i class="fas fa-redo-alt"> Générer nouveau mot de passe</i> </a>-->
                                     <!--<a class="btn btn-success" href="{ { route('employee.profil', $employee) }}" style="margin-left: 10px"><i class="fas fa-user"> Profil</i> </a>-->
                                 </td>
                             </tr>

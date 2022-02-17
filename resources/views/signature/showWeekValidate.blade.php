@@ -1,13 +1,5 @@
 @extends('layouts/app')
 
-@section('css')
-
-    <style>
-
-    </style>
-
-@endsection
-
 @section('content')
     <div class="container">
         <h2 style="text-align: center">Semaine n°{{$signature->nSemaine}} | Année {{$signature->nAnnee}} | Employé : {{ $employee->name . " " . $employee->lastname }}</h2>
@@ -19,11 +11,33 @@
             </tr>
             </thead>
             <tbody>
+            <?php $countDown = 0; ?>
             @foreach($plannings as $planning)
-                <tr style="text-align: center">
-                    <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d/m/Y H\hi\m') }}</td>
-                    <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date_end)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date_end)->format('d/m/Y H\hi\m') }}</td>
-                </tr>
+
+                @if($planning->isCP == 1 && $planning->isRecup == 0)
+                    <tr style="text-align: center">
+                        <td colspan="2">CP ==> {{ ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d/m/Y') }} ({{ (\Carbon\Carbon::parse($planning->date_end)->diffInMinutes(\Carbon\Carbon::parse($planning->date)))/60 }} H)</td>
+                    </tr>
+                    <?php
+                    $fin = new \Carbon\Carbon($planning->date_end);
+                    $diff = $fin->diffInMinutes($planning->date);
+                    $countDown = $countDown + $diff;
+                    ?>
+                @elseif($planning->isCP == 0 && $planning->isRecup == 1)
+                    <tr style="text-align: center">
+                        <td colspan="2">Recup ==> {{ ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d/m/Y') }} ({{ (\Carbon\Carbon::parse($planning->date_end)->diffInMinutes(\Carbon\Carbon::parse($planning->date)))/60 }} H)</td>
+                    </tr>
+                    <?php
+                    $fin = new \Carbon\Carbon($planning->date_end);
+                    $diff = $fin->diffInMinutes($planning->date);
+                    $countDown = $countDown + $diff;
+                    ?>
+                @else
+                    <tr style="text-align: center">
+                        <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date)->format('d/m/Y H\hi\m') }}</td>
+                        <td>{{  ucfirst(\Carbon\Carbon::parse($planning->date_end)->localeDayOfWeek) . ' ' . \Carbon\Carbon::parse($planning->date_end)->format('d/m/Y H\hi\m') }}</td>
+                    </tr>
+                @endif
             @endforeach
             </tbody>
         </table>
@@ -35,7 +49,7 @@
                     <thead>
                     <tr>
                         <th>Le jour</th>
-                        <th>Les jours</th>
+                        <th>Les heures</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,7 +64,7 @@
                         </tr>
                     @endforeach
                     <tr>
-                        <td colspan="2">TOTAL SEMAINE : <b>{{ $total }} H</b></td>
+                        <td colspan="2">TOTAL SEMAINE : <b>{{ $total }} H {{ $countDown > 0 ? "(" . $countDown/60 . " heures CP ou RECUP)" : "" }}</b></td>
                     </tr>
                     </tbody>
                 </table>

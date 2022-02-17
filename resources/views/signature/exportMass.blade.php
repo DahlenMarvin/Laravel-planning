@@ -1,13 +1,5 @@
 @extends('layouts/app')
 
-@section('css')
-
-    <style>
-
-    </style>
-
-@endsection
-
 @section('content')
     <div class="container">
         @foreach($arrayFormat as $raw)
@@ -73,7 +65,7 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <td colspan="2">TOTAL SEMAINE : <b>{{ $total - ($countDown/60) }} H {{ $countDown > 0 ? "( + " . $countDown/60 . " heures CP ou RECUP)" : "" }}</b></td>
+                            <td colspan="2">TOTAL SEMAINE : <b>{{ $total }} H {{ $countDown > 0 ? "(" . $countDown/60 . " heures CP ou RECUP)" : "" }}</b></td>
                         </tr>
                         </tbody>
                     </table>

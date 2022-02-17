@@ -26,17 +26,15 @@
             cursor: move;
         }
     </style>
-
 @endsection
+
+
 
 @section('content')
 
     <div class="container">
-
         <div id="calendar"></div>
-
     </div>
-
     <!-- Modal -->
     <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
@@ -48,6 +46,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+
                 <div class="modal-body">
                     <form action="{{ route('planning.store') }}" method="post" id="addEmployee">
                         {{ csrf_field() }}
@@ -120,10 +119,11 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="form-group row">
                             <label for="dateCP" class="col-sm-4 col-form-label">Date</label>
                             <div class="col-sm-8">
-                                <input type="date" class="date form-control" id="dateCP" name="dateCP" value="{{ \Carbon\Carbon::now()->format('Y-m-d H:i') }}">
+                                <input type="date" class="date form-control" id="dateCP" name="dateCP" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -184,7 +184,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal -->
     <div class="modal fade" id="modalHours" tabindex="-1" role="dialog" aria-labelledby="modalHours"
          aria-hidden="true">
@@ -214,7 +213,6 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', function() {
-
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: [ 'interaction', 'timeGrid' ],
@@ -253,7 +251,6 @@
                     hours: {
                         text: 'Vos heures',
                         click: function() {
-
                             var dateString = $('.fc-center').text();
                             var weekNumberString = $('.fc-week-number span').text();
 
@@ -263,12 +260,20 @@
                                 }
                             });
 
+                            let annee;
+                            const semaine = weekNumberString.substring(weekNumberString.length - 2);
+                            if(semaine === "53") {
+                                annee = new Date().getFullYear()
+                            } else {
+                                annee = dateString.substring(dateString.length - 4);
+                            }
+                            console.log(annee);
                             $.ajax({
                                 method: 'GET',
                                 url: '{{ route('planning.getHoursEmployees') }}',
                                 data: {
                                     magasin_id: {{ \Illuminate\Support\Facades\Auth::user()->id }},
-                                    year: dateString.substring(dateString.length - 4),
+                                    year: annee,
                                     weekNumber: weekNumberString.substring(weekNumberString.length - 2)
                                 },
                                 dataType: 'html',
@@ -466,3 +471,4 @@
     </script>
 
 @endsection
+

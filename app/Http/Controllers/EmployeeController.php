@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use App\Employee;
+use App\Mail\PasswordGenerated;
+use App\Mail\SendRequest;
 use App\User;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Psy\Command\Command;
@@ -148,7 +152,7 @@ class EmployeeController extends Controller
      */
     public function profil($employee) {
         $employee = Employee::find($employee);
-        $activities = Activity::where('employee_id', $employee->id)->take(10)->get();
+        $activities = Activity::where('employee_id', $employee->id)->take(10)->orderByDesc('created_at')->get();
         return view('employee.profil', compact('employee', 'activities'));
     }
 
@@ -181,4 +185,29 @@ class EmployeeController extends Controller
 
         return Redirect::to("/employee")->withSuccess('Employé activé avec succès');
     }
+
+    /**
+     * un employé demande un congé ou une récup
+     *
+     * @param Employee $employee
+     * @return Application|Factory|RedirectResponse|View
+     */
+    public function ask(Employee $employee)
+    {
+        return view('employee.ask', compact('employee'));
+    }
+
+    /**
+     * On ajoute en base de données la demande de congé / récup
+     *
+     * @param Request $request
+     * @param Employee $employee
+     * @return void
+     */
+    public function storeAsk(Request $request, Employee $employee)
+    {
+        Mail::to('c.lecanu@ledlc.fr')->send(new SendRequest($employee, $request->get('typeDemande'), $request->get('poste'), $request->get('nSemaine'), $request->get('comment')));
+        return Redirect::to("/employee")->withSuccess('Demande envoyée avec succès à Charline');
+    }
+
 }
